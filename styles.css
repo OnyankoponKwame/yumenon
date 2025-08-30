@@ -1,0 +1,514 @@
+:root {
+  /* Vaporwave gradient backdrop */
+  --bg-grad: radial-gradient(
+      1000px 700px at 10% 20%,
+      rgba(255, 0, 102, 0.18) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 600px at 85% 10%,
+      rgba(0, 255, 204, 0.12) 0%,
+      transparent 60%
+    ),
+    linear-gradient(180deg, #3b1d60 0%, #2c1b4a 45%, #1a1233 100%);
+  --pink: #ff66b3;
+  --pink-deep: #ff4fa3;
+  --lav: #b19eff;
+  --cyan: #38e8dd;
+  --text: #efe8ff;
+  --card: #1a1233cc;
+  --bgimg-opacity: 0.25;
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: "Yomogi", "Yusei Magic", "Hiragino Maru Gothic ProN",
+    "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "UD Digi Kyokasho N-R",
+    system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  background: var(--bg-grad);
+  overflow-x: hidden;
+}
+
+#bg-img-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: blur(4px) saturate(105%);
+  opacity: var(--bgimg-opacity);
+}
+
+/* Optional: drop in your own handwriting font
+@font-face {
+  font-family: "MyHand";
+  src: url("assets/fonts/MyHand.woff2") format("woff2");
+  font-display: swap;
+}
+body { font-family: MyHand, ... }
+*/
+
+.bg-confetti {
+  display: none;
+}
+
+.card {
+  width: min(960px, 92vw);
+  margin: 32px auto;
+  background: var(--card);
+  backdrop-filter: blur(12px) saturate(140%);
+  border: 2px solid rgba(255, 102, 179, 0.35);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px -18px rgba(56, 232, 221, 0.35),
+    0 10px 40px -18px rgba(255, 102, 179, 0.35);
+  padding: 20px 20px 16px;
+}
+
+.header {
+  text-align: center;
+}
+.header h1 {
+  margin: 8px 0 0;
+  font-size: 28px;
+  letter-spacing: 0.04em;
+  color: #ffd1f0;
+  text-shadow: 0 0 18px rgba(255, 102, 179, 0.45),
+    0 0 8px rgba(56, 232, 221, 0.25);
+}
+.header h1.neon {
+  font-family: "Yusei Magic", system-ui, -apple-system, sans-serif;
+  font-size: clamp(28px, 5vw, 44px);
+  letter-spacing: 0.06em;
+  color: #ffb3e1;
+  text-shadow: 0 0 2px #fff, 0 0 12px rgba(255, 102, 179, 0.8),
+    0 0 28px rgba(56, 232, 221, 0.55), 0 0 46px rgba(255, 102, 179, 0.45);
+  filter: saturate(120%);
+  animation: neonFlicker 3.2s ease-in-out infinite;
+}
+@keyframes neonFlicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  48% {
+    opacity: 0.96;
+  }
+  50% {
+    opacity: 0.88;
+  }
+  52% {
+    opacity: 0.98;
+  }
+}
+.sub {
+  margin: 4px 0 8px;
+  color: #c7b6ff;
+}
+
+.controls {
+  padding: 8px 8px 0;
+}
+.field {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0;
+}
+.field > span {
+  font-size: 12px;
+  color: #927f90;
+}
+textarea#message {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 18px;
+  line-height: 1.8;
+  border-radius: 14px;
+  border: 2px dashed rgba(255, 102, 179, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+  outline: none;
+  color: #5c4d5b;
+  box-shadow: inset 0 2px 8px rgba(255, 102, 179, 0.08);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: end;
+}
+.inline {
+  display: grid;
+  gap: 4px;
+}
+.inline input[type="range"] {
+  width: 180px;
+}
+.inline select,
+.inline input[type="color"] {
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 1px solid #ffd3ea;
+  background: #fff;
+}
+
+.btn {
+  margin-left: auto;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(180deg, #ff89c5, #ff5fb0);
+  color: white;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  box-shadow: 0 6px 18px -6px rgba(255, 95, 176, 0.8),
+    0 0 14px rgba(56, 232, 221, 0.35) inset;
+  cursor: pointer;
+}
+.btn:hover {
+  filter: brightness(1.05);
+}
+
+.preview-wrap {
+  margin-top: 10px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.03)
+  );
+  border: 1.5px solid rgba(255, 102, 179, 0.35);
+  border-radius: 16px;
+  min-height: 240px;
+  padding: 18px;
+  backdrop-filter: blur(8px) saturate(140%);
+  box-shadow: 0 10px 26px -12px rgba(56, 232, 221, 0.25),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+.preview {
+  min-height: 200px;
+  position: relative;
+  overflow: visible;
+}
+
+/* Typing mode visuals */
+.typing-line {
+  font-size: clamp(20px, 2.4vw, 30px);
+  line-height: 1.9;
+  color: var(--pink-deep);
+}
+.typing-line .ch {
+  opacity: 0;
+  transform: translateY(6px) rotate(var(--rot, 0deg));
+  display: inline-block;
+  filter: drop-shadow(0 1px 0 #fff);
+}
+.typing-line .ch.show {
+  opacity: 1;
+  transform: none;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.caret {
+  display: inline-block;
+  width: 0.6ch;
+  height: 1.2em;
+  vertical-align: -0.2em;
+}
+.caret::after {
+  content: "";
+  display: block;
+  width: 2px;
+  height: 100%;
+  background: var(--pink);
+  animation: blink 0.9s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* SVG mode visuals */
+.svg-wrap {
+  width: 100%;
+}
+.svg-wrap svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.pen-stroke {
+  fill: none;
+  stroke: var(--pink);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  paint-order: stroke fill;
+}
+.pen-fill {
+  fill: var(--pink);
+  fill-opacity: 0;
+  transition: fill-opacity 0.6s ease;
+}
+
+/* Stroke-mode paths */
+.stroke-path {
+  fill: none;
+  stroke: var(--pink);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: url(#edge);
+}
+.outline-path {
+  fill: none;
+  stroke: var(--pink);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Vaporwave grid at the bottom */
+#vapor-grid {
+  position: fixed;
+  inset: auto 0 0 0;
+  height: 42vh;
+  z-index: 0;
+  background: repeating-linear-gradient(
+      0deg,
+      rgba(255, 102, 179, 0.35) 0 2px,
+      transparent 2px 40px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(56, 232, 221, 0.35) 0 2px,
+      transparent 2px 60px
+    );
+  transform: perspective(700px) rotateX(60deg) scale(1.2);
+  transform-origin: bottom;
+  filter: drop-shadow(0 -6px 10px rgba(255, 102, 179, 0.35));
+}
+
+/* Floating hearts */
+#hearts {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.heart {
+  position: absolute;
+  width: var(--s, 14px);
+  height: var(--s, 14px);
+  background: var(--pink);
+  transform: translate(-50%, -50%) rotate(45deg);
+  opacity: 0.85;
+  animation: rise var(--t, 12s) linear forwards;
+  filter: drop-shadow(0 0 8px rgba(255, 102, 179, 0.45));
+}
+.heart::before,
+.heart::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  border-radius: 50%;
+}
+.heart::before {
+  transform: translate(-50%, 0);
+}
+.heart::after {
+  transform: translate(0, -50%);
+}
+@keyframes rise {
+  to {
+    top: -10vh;
+    opacity: 0;
+  }
+}
+
+/* Providence-style neon triangle with a cute eye */
+#third-eye {
+  position: fixed;
+  top: 8vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(72vw, 440px);
+  height: min(60vw, 360px);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.02)
+  );
+  box-shadow: 0 0 36px rgba(255, 102, 179, 0.35),
+    0 0 64px rgba(56, 232, 221, 0.25);
+  border: 2px solid rgba(255, 102, 179, 0.35);
+  z-index: 2;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+#third-eye::before {
+  /* inner neon border */
+  content: "";
+  position: absolute;
+  inset: 6px;
+  clip-path: inherit;
+  border: 2px solid rgba(56, 232, 221, 0.35);
+  box-shadow: 0 0 24px rgba(56, 232, 221, 0.35),
+    inset 0 0 18px rgba(255, 102, 179, 0.25);
+}
+/* Rays inside triangle */
+#third-eye .rays {
+  position: absolute;
+  inset: 0;
+  clip-path: inherit;
+  background: repeating-conic-gradient(
+      from -10deg,
+      rgba(255, 102, 179, 0.65) 0 8deg,
+      rgba(56, 232, 221, 0.55) 8deg 12deg,
+      transparent 12deg 16deg
+    ),
+    radial-gradient(
+      circle at 50% 55%,
+      rgba(255, 255, 255, 0.18),
+      rgba(255, 255, 255, 0) 60%
+    );
+  -webkit-mask-image: radial-gradient(
+    circle at 50% 55%,
+    rgba(0, 0, 0, 0) 0 8%,
+    rgba(0, 0, 0, 1) 18%
+  );
+  mask-image: radial-gradient(
+    circle at 50% 55%,
+    rgba(0, 0, 0, 0) 0 8%,
+    rgba(0, 0, 0, 1) 18%
+  );
+  opacity: 0.9;
+}
+@keyframes raysSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Spin the whole triangle (opt-in): add class .spin-all to #third-eye */
+#third-eye.spin-all {
+  animation: triSpin 30s linear infinite;
+}
+@keyframes triSpin {
+  from { transform: translateX(-50%) rotate(0deg); }
+  to   { transform: translateX(-50%) rotate(360deg); }
+}
+
+/* Cute heart highlight */
+#third-eye .heart-glint {
+  position: absolute;
+  left: 66%;
+  top: 42%;
+  width: 18px;
+  height: 18px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: #fff;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.65))
+    drop-shadow(0 0 18px rgba(255, 102, 179, 0.65));
+  border-radius: 2px;
+  opacity: 0.9;
+  animation: glintPulse 3.6s ease-in-out infinite;
+  transition: left 1.8s ease-in-out, top 1.8s ease-in-out;
+}
+#third-eye .heart-glint::before,
+#third-eye .heart-glint::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  border-radius: 50%;
+}
+#third-eye .heart-glint::before {
+  transform: translate(-50%, 0);
+}
+#third-eye .heart-glint::after {
+  transform: translate(0, -50%);
+}
+@keyframes glintPulse {
+  50% {
+    transform: translate(-50%, -50%) rotate(45deg) scale(1.2);
+  }
+}
+
+/* Eye SVG styling (cute, non-creepy) */
+#third-eye .eye-svg {
+  position: absolute;
+  inset: 0;
+}
+.eye-outline {
+  fill: none;
+  stroke: var(--pink);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 8px rgba(255, 102, 179, 0.45))
+    drop-shadow(0 0 10px rgba(56, 232, 221, 0.35));
+}
+.eye-pupil {
+  fill: url(#pupilGrad);
+  filter: drop-shadow(0 0 6px rgba(56, 232, 221, 0.45));
+}
+
+/* VHS scanline/noise overlay */
+#vhs-noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.05) 0 2px,
+    rgba(0, 0, 0, 0) 2px 4px
+  );
+  mix-blend-mode: overlay;
+  opacity: 0.28;
+  animation: flicker 2s steps(2, end) infinite;
+}
+@keyframes flicker {
+  50% {
+    opacity: 0.22;
+  }
+}
+
+/* Elevate card above backgrounds */
+.card {
+  position: relative;
+  z-index: 1;
+}
+
+/* Utility */
+.tips {
+  margin-top: 8px;
+}
+.tips summary {
+  cursor: pointer;
+  color: #a56699;
+}
+.footer {
+  text-align: center;
+  margin-top: 8px;
+  color: #9a8796;
+}
+
+/* Actions area */
+.actions {
+  margin: 8px 8px 0;
+}
+.actions .row {
+  align-items: center;
+}
