@@ -244,9 +244,24 @@ body.theme-switching #theme-fx {
   /* padding: 52px 20px 16px; */
   position: relative;
 }
-.card.maximized{ width: 96vw; max-width: none; }
-.card.minimized .win2k-body{ display:none; }
-.card.minimized .win2k-window .titlebar{ position: fixed; left:10px; right:auto; bottom: 10px; top:auto; z-index: 10; width: max-content; box-shadow: 0 2px 6px rgba(0,0,0,.35); border-radius: 3px; }
+.card.maximized {
+  width: 96vw;
+  max-width: none;
+}
+.card.minimized .win2k-body {
+  display: none;
+}
+.card.minimized .win2k-window .titlebar {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 8px;
+  top: auto;
+  z-index: 10;
+  width: max-content;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  border-radius: 3px;
+}
 
 /* 90s ADV window bar */
 .window-bar {
@@ -852,11 +867,7 @@ body.theme-vapor #global-noise {
   --btn-sh: #808080;
   --btn-dk: #404040;
 }
-.win2k-window {
-  border-top: 1px solid var(--border-top-hi);
-  border-bottom: 1px solid var(--border-bot-dark);
-  font-family: Tahoma, "MS UI Gothic", sans-serif;
-}
+
 .titlebar {
   position: relative;
   height: 22px;
@@ -877,8 +888,18 @@ body.theme-vapor #global-noise {
   box-shadow: inset 0 1px 0 var(--border-top-hi),
     inset 0 -1px 0 var(--border-bot-dark);
 }
-.win2k-body{ border-left: 1px solid var(--border-bot-dark); border-right:1px solid var(--border-bot-dark); border-bottom:1px solid var(--border-bot-dark); box-shadow: inset 1px 0 0 var(--border-top-hi), inset -1px 0 0 var(--btn-sh), inset 0 -1px 0 var(--btn-sh); border-radius: 0 0 3px 3px; padding: 10px 10px 8px; }
-.win2k-body.collapsed{ display:none; }
+.win2k-body {
+  border-left: 1px solid var(--border-bot-dark);
+  border-right: 1px solid var(--border-bot-dark);
+  border-bottom: 1px solid var(--border-bot-dark);
+  box-shadow: inset 1px 0 0 var(--border-top-hi), inset -1px 0 0 var(--btn-sh),
+    inset 0 -1px 0 var(--btn-sh);
+  border-radius: 0 0 3px 3px;
+  padding: 10px 10px 8px;
+}
+.win2k-body.collapsed {
+  display: none;
+}
 .titlebar.inactive {
   background: linear-gradient(to right, #808080 0%, #c0c0c0 100%);
   color: #e0e0e0;
@@ -892,6 +913,9 @@ body.theme-vapor #global-noise {
   background: var(--btn-face);
   box-shadow: inset 1px 1px 0 var(--btn-hi), inset -1px -1px 0 var(--btn-sh),
     0 0 0 1px #000;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12'><rect x='0.5' y='0.5' width='11' height='11' fill='%23ffffff' stroke='%23000'/><path d='M6 3 C5.2 2.2 3.8 2.2 3.3 3.5 C2.9 4.5 3.8 5.4 4.7 6.2 C5.2 6.6 5.5 6.8 6 7.2 C6.5 6.8 6.8 6.6 7.3 6.2 C8.2 5.4 9.1 4.5 8.7 3.5 C8.2 2.2 6.8 2.2 6 3 Z' fill='%23ff66b3'/></svg>");
+  background-repeat: no-repeat;
+  background-position: 2px 2px;
 }
 .title {
   font-weight: 700;
@@ -900,11 +924,24 @@ body.theme-vapor #global-noise {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.caption-buttons { margin-left: auto; display: flex; gap: 6px; }
-.caption-buttons button { width: 16px; height: 14px; background: var(--btn-face); border: none; padding: 0; cursor: default; box-shadow: inset 1px 1px 0 var(--btn-hi), inset -1px -1px 0 var(--btn-sh), 0 0 0 1px #000; position: relative; }
+.caption-buttons {
+  margin-left: auto;
+  display: flex;
+  gap: 6px;
+}
+.caption-buttons button {
+  width: 16px;
+  height: 14px;
+  background: var(--btn-face);
+  border: none;
+  padding: 0;
+  cursor: default;
+  box-shadow: inset 1px 1px 0 var(--btn-hi), inset -1px -1px 0 var(--btn-sh),
+    0 0 0 1px #000;
+  position: relative;
+}
 .caption-buttons .min::before,
-.caption-buttons .max::before,
-.caption-buttons .close::before {
+.caption-buttons .max::before {
   content: "";
   display: block;
   margin: 0 auto;

@@ -4,8 +4,8 @@
 
   const elPreview = $("#preview");
   const elReplay = $("#replay");
-  const elTitle = document.querySelector('.header h1');
-  const elSub = document.querySelector('.header .sub');
+  const elTitle = document.querySelector(".header h1");
+  const elSub = document.querySelector(".header .sub");
 
   // 固定テキスト（ここを書き換えてください）
   const YUME_TEXT = `かわいいものがすきで
@@ -42,10 +42,10 @@
 ぼくはまだ上手に言えないけど、
 この光が消えないうちに、好きって言う。`;
 
-  const YUME_TITLE = 'ゆめかわ告白メーカー';
-  const YUME_SUB = '手書き風に想いを届けよう…♡';
-  const VAPOR_TITLE = 'ネオンのこくはく';
-  const VAPOR_SUB = '夜のグリッドに想いを流す';
+  const YUME_TITLE = "夢かわいい";
+  const YUME_SUB = "手書き風に想いを届けよう…♡";
+  const VAPOR_TITLE = "ひみつのこと";
+  const VAPOR_SUB = "夜のグリッドに想いを流す";
 
   let TEXT = YUME_TEXT;
   // 表現モード: 'outline'（フォント輪郭描画） / 'stroke'（テンプレ字画） / 'svg'（リビール） / 'type'
@@ -80,11 +80,11 @@
 
   // Theme: programmatic switch (default to yume on load)
   const setTheme = (name) => {
-    document.body.classList.remove('theme-vapor','theme-yume');
-    const cls = name === 'yume' ? 'theme-yume' : 'theme-vapor';
+    document.body.classList.remove("theme-vapor", "theme-yume");
+    const cls = name === "yume" ? "theme-yume" : "theme-vapor";
     document.body.classList.add(cls);
     // apply theme-specific content
-    if (name === 'yume') {
+    if (name === "yume") {
       TEXT = YUME_TEXT;
       if (elTitle) elTitle.textContent = YUME_TITLE;
       if (elSub) elSub.textContent = YUME_SUB;
@@ -94,7 +94,7 @@
       if (elSub) elSub.textContent = VAPOR_SUB;
     }
   };
-  setTheme('yume');
+  setTheme("yume");
 
   // 再生ディスパッチ
   function playNow() {
@@ -106,36 +106,36 @@
   }
 
   // Win2k caption buttons behavior
-  (function initWindowButtons(){
-    const card = document.querySelector('main.card');
-    const bodyPanel = document.querySelector('.win2k-body');
-    const tb = document.querySelector('.win2k-window .titlebar');
+  (function initWindowButtons() {
+    const card = document.querySelector("main.card");
+    const bodyPanel = document.querySelector(".win2k-body");
+    const tb = document.querySelector(".win2k-window .titlebar");
     if (!card || !tb) return;
-    const minBtn = tb.querySelector('.caption-buttons .min');
-    const maxBtn = tb.querySelector('.caption-buttons .max');
-    const closeBtn = tb.querySelector('.caption-buttons .close');
-    minBtn?.addEventListener('click', (e)=>{
+    const minBtn = tb.querySelector(".caption-buttons .min");
+    const maxBtn = tb.querySelector(".caption-buttons .max");
+    const closeBtn = tb.querySelector(".caption-buttons .close");
+    minBtn?.addEventListener("click", (e) => {
       e.preventDefault();
-      const nowMin = card.classList.toggle('minimized');
+      const nowMin = card.classList.toggle("minimized");
       if (nowMin) {
-        bodyPanel?.classList.add('collapsed');
-        card.classList.remove('maximized');
+        bodyPanel?.classList.add("collapsed");
+        card.classList.remove("maximized");
       } else {
-        bodyPanel?.classList.remove('collapsed');
+        bodyPanel?.classList.remove("collapsed");
       }
     });
-    maxBtn?.addEventListener('click', (e)=>{
+    maxBtn?.addEventListener("click", (e) => {
       e.preventDefault();
-      card.classList.toggle('maximized');
-      if (card.classList.contains('maximized')) {
-        card.classList.remove('minimized');
-        bodyPanel?.classList.remove('collapsed');
+      card.classList.toggle("maximized");
+      if (card.classList.contains("maximized")) {
+        card.classList.remove("minimized");
+        bodyPanel?.classList.remove("collapsed");
       }
     });
-    closeBtn?.addEventListener('click', (e)=>{
+    closeBtn?.addEventListener("click", (e) => {
       e.preventDefault();
       // Hide the entire window; no restore
-      card.style.display = 'none';
+      card.style.display = "none";
     });
   })();
 
@@ -144,13 +144,17 @@
     updateSpeedLabel();
     playNow();
     // show push start label briefly
-    const ps = document.getElementById('push-start');
+    const ps = document.getElementById("push-start");
     if (ps) {
-      ps.style.display = 'block';
-      const hide = () => { ps.style.display = 'none'; document.removeEventListener('click', hide); document.removeEventListener('keydown', hide); };
+      ps.style.display = "block";
+      const hide = () => {
+        ps.style.display = "none";
+        document.removeEventListener("click", hide);
+        document.removeEventListener("keydown", hide);
+      };
       setTimeout(hide, 3000);
-      document.addEventListener('click', hide);
-      document.addEventListener('keydown', hide);
+      document.addEventListener("click", hide);
+      document.addEventListener("keydown", hide);
     }
   });
 
@@ -175,16 +179,19 @@
   }
 
   // Yume heart click -> transition to vapor theme
-  const yumeHeartCore = document.querySelector('#yume-heart .core');
-  const themeFx = document.getElementById('theme-fx');
+  const yumeHeartCore = document.querySelector("#yume-heart .core");
+  const themeFx = document.getElementById("theme-fx");
   if (yumeHeartCore) {
-    yumeHeartCore.addEventListener('click', () => {
-      document.body.classList.add('theme-switching');
+    yumeHeartCore.addEventListener("click", () => {
+      document.body.classList.add("theme-switching");
       // small delay for overlay, then switch theme
       setTimeout(() => {
-        setTheme('vapor');
+        setTheme("vapor");
         // remove switching after fade completes
-        setTimeout(() => document.body.classList.remove('theme-switching'), 900);
+        setTimeout(
+          () => document.body.classList.remove("theme-switching"),
+          900
+        );
         // replay with new content
         playNow();
       }, 200);
@@ -192,19 +199,20 @@
 
     // Make heart wander across the screen while in yume theme
     const wander = () => {
-      if (!document.body.classList.contains('theme-yume')) return; // stop after switch
+      if (!document.body.classList.contains("theme-yume")) return; // stop after switch
       const marginVh = 18; // vertical safe margins
       const topVh = Math.round(marginVh + Math.random() * (70 - marginVh));
       const leftVw = Math.round(15 + Math.random() * 70); // keep inside horizontally
-      yumeHeartCore.style.top = topVh + 'vh';
-      yumeHeartCore.style.left = leftVw + 'vw';
+      yumeHeartCore.style.top = topVh + "vh";
+      yumeHeartCore.style.left = leftVw + "vw";
     };
     // Seed and then move periodically
     setTimeout(wander, 400);
     const wanderId = setInterval(wander, 2400);
     // Clear interval on theme switch
-    document.addEventListener('transitionend', () => {
-      if (!document.body.classList.contains('theme-yume')) clearInterval(wanderId);
+    document.addEventListener("transitionend", () => {
+      if (!document.body.classList.contains("theme-yume"))
+        clearInterval(wanderId);
     });
   }
 
@@ -272,28 +280,37 @@
   }
 
   // Wander the heart glint inside the triangle
-  const elThirdEye = document.getElementById('third-eye');
+  const elThirdEye = document.getElementById("third-eye");
   if (elThirdEye) {
-    const glint = elThirdEye.querySelector('.heart-glint');
+    const glint = elThirdEye.querySelector(".heart-glint");
     if (glint) {
-      const A = { x: 50, y: 0 }, B = { x: 0, y: 100 }, C = { x: 100, y: 100 };
+      const A = { x: 50, y: 0 },
+        B = { x: 0, y: 100 },
+        C = { x: 100, y: 100 };
       const randBarycentricPoint = () => {
-        let u = Math.random(), v = Math.random();
-        if (u + v > 1) { u = 1 - u; v = 1 - v; }
+        let u = Math.random(),
+          v = Math.random();
+        if (u + v > 1) {
+          u = 1 - u;
+          v = 1 - v;
+        }
         const x = A.x * (1 - u - v) + B.x * u + C.x * v;
         const y = A.y * (1 - u - v) + B.y * u + C.y * v;
-        return { x: Math.max(8, Math.min(92, x)), y: Math.max(18, Math.min(90, y)) };
+        return {
+          x: Math.max(8, Math.min(92, x)),
+          y: Math.max(18, Math.min(90, y)),
+        };
       };
       const move = () => {
         const p = randBarycentricPoint();
-        glint.style.left = p.x + '%';
-        glint.style.top = p.y + '%';
+        glint.style.left = p.x + "%";
+        glint.style.top = p.y + "%";
       };
       setInterval(move, 2600);
     }
 
     // Move the SVG pupil to chase the heart-glint inside the triangle
-    const pupil = elThirdEye.querySelector('.eye-pupil');
+    const pupil = elThirdEye.querySelector(".eye-pupil");
     if (pupil) {
       let rafId;
       const centerX = 50;
@@ -302,9 +319,10 @@
       const centerY = 47;
       const minY = 43;
       const maxY = 51;
-      const easeInOut = (t) => (t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t+2, 2)/2);
+      const easeInOut = (t) =>
+        t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 
-      const animateTo = (from, to, durMs, attr='cx') => {
+      const animateTo = (from, to, durMs, attr = "cx") => {
         const start = performance.now();
         const end = start + durMs;
         const tick = (now) => {
@@ -323,16 +341,22 @@
         const lx = parseFloat(glint.style.left) || 50; // 0..100
         const ly = parseFloat(glint.style.top) || 50;
         // map to limited pupil range around center with compression
-        const targetCx = Math.max(minX, Math.min(maxX, centerX + (lx - 50) * (6/50)));
-        const targetCy = Math.max(minY, Math.min(maxY, centerY + (ly - 50) * (5/50)));
+        const targetCx = Math.max(
+          minX,
+          Math.min(maxX, centerX + (lx - 50) * (6 / 50))
+        );
+        const targetCy = Math.max(
+          minY,
+          Math.min(maxY, centerY + (ly - 50) * (5 / 50))
+        );
 
-        const curCx = parseFloat(pupil.getAttribute('cx')) || centerX;
-        const curCy = parseFloat(pupil.getAttribute('cy')) || centerY;
+        const curCx = parseFloat(pupil.getAttribute("cx")) || centerX;
+        const curCy = parseFloat(pupil.getAttribute("cy")) || centerY;
         const dist = Math.hypot(targetCx - curCx, targetCy - curCy);
         const baseDur = 800; // ms for unit step
         const dur = (baseDur + dist * 40) / Math.max(0.2, SPEED);
-        animateTo(curCx, targetCx, dur * 0.9, 'cx');
-        animateTo(curCy, targetCy, dur, 'cy');
+        animateTo(curCx, targetCx, dur * 0.9, "cx");
+        animateTo(curCy, targetCy, dur, "cy");
       };
 
       // chase periodically; also on glint moves (same timer cadence)
