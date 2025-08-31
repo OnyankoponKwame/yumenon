@@ -142,13 +142,13 @@ body.theme-switching #theme-fx { opacity: 1; background: radial-gradient(circle 
 /* 90s ADV window bar */
 .window-bar {
   position: absolute; top: 0; left: 0; right: 0; height: 28px;
-  background: linear-gradient(180deg, #e4e1db, #cfcac2);
+  background: linear-gradient(180deg, #0a246a, #3a6ea5);
   border-top-left-radius: 6px; border-top-right-radius: 6px;
-  border-bottom: 1px solid #808080;
+  border-bottom: 1px solid #003c74;
   display: flex; align-items: center; padding: 0 8px; gap: 10px;
 }
-.win-icon { width: 16px; height: 16px; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' shape-rendering='crispEdges'><rect x='0.5' y='0.5' width='15' height='15' fill='%23d4d0c8' stroke='%23808080'/><rect x='3.5' y='3.5' width='9' height='9' fill='%23ffffff' stroke='%23000000'/><rect x='3.5' y='3.5' width='9' height='3' fill='%230a246a'/><path d='M8 7 C7.3 6.2 6.1 6.2 5.6 7.2 C5.3 7.8 5.8 8.5 6.4 9.0 C6.9 9.4 7.2 9.6 8 10.2 C8.8 9.6 9.1 9.4 9.6 9.0 C10.2 8.5 10.7 7.8 10.4 7.2 C9.9 6.2 8.7 6.2 8 7 Z' fill='%23ff66b3'/></svg>"); background-size: 16px 16px; border: 1px solid #808080; box-shadow: inset 1px 1px 0 #fff; }
-.win-title { flex: 1; font-size: 12px; letter-spacing: .02em; color: #000; text-shadow: 0 1px 0 #ffffff; font-family: Tahoma, "MS UI Gothic", system-ui, sans-serif; }
+.win-icon { width: 16px; height: 16px; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' shape-rendering='crispEdges'><rect x='0.5' y='0.5' width='15' height='15' fill='%23d4d0c8' stroke='%23808080'/><rect x='3.5' y='3.5' width='9' height='9' fill='%23ffffff' stroke='%23000000'/><rect x='3.5' y='3.5' width='9' height='3' fill='%230a246a'/></svg>"); background-size: 16px 16px; border: 1px solid #808080; box-shadow: inset 1px 1px 0 #fff; }
+.win-title { flex: 1; font-size: 12px; letter-spacing: .02em; color: #fff; text-shadow: 0 1px 0 #001a4a; font-family: Tahoma, "MS UI Gothic", system-ui, sans-serif; }
 .win-buttons { display: flex; gap: 4px; }
 .win-buttons .win-btn {
   all: unset;
