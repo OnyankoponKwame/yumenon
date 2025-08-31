@@ -14,7 +14,7 @@ body.theme-vapor {
   --bg-grad: radial-gradient(1000px 700px at 10% 20%, rgba(255,0,102,.18) 0%, transparent 60%),
               radial-gradient(900px 600px at 85% 10%, rgba(0,255,204,.12) 0%, transparent 60%),
               linear-gradient(180deg, #3b1d60 0%, #2c1b4a 45%, #1a1233 100%);
-  --text: #efe8ff;
+  --text: #ffffff;
   --card: #1a1233cc;
   --bgimg-opacity: 0.25;
 }
@@ -135,24 +135,29 @@ body.theme-switching #theme-fx { opacity: 1; background: radial-gradient(circle 
     0 12px 46px -18px rgba(255, 102, 179, 0.35),
     inset 0 0 0 1px rgba(255,255,255,.06),
     inset 0 0 24px rgba(255,102,179,.12);
-  padding: 20px 20px 16px;
+  padding: 52px 20px 16px; /* extra for window bar */
   position: relative;
 }
 
 /* 90s ADV window bar */
 .window-bar {
-  position: absolute; top: 0; left: 0; right: 0; height: 34px;
-  background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.02));
+  position: absolute; top: 0; left: 0; right: 0; height: 36px;
+  background: linear-gradient(180deg, #2a74d9, #0f4ea8);
   border-top-left-radius: 24px; border-top-right-radius: 24px;
-  border-bottom: 1px solid rgba(255,255,255,.15);
-  display: flex; align-items: center; padding: 0 12px; gap: 10px;
+  border-bottom: 1px solid #082f6b;
+  display: flex; align-items: center; padding: 0 10px; gap: 10px;
 }
-.win-dots { display: flex; gap: 6px; }
-.win-dots .dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 6px rgba(255,255,255,.35) inset, 0 0 8px rgba(255,255,255,.25); }
-.win-dots .dot.red { background: #ff6b6b; }
-.win-dots .dot.yellow { background: #ffd93d; }
-.win-dots .dot.green { background: #6bffb0; }
-.win-title { font-size: 12px; letter-spacing: .08em; color: rgba(255,255,255,.85); text-shadow: 0 0 6px rgba(255,102,179,.4); }
+.win-title { flex: 1; font-size: 13px; letter-spacing: .05em; color: #fff; text-shadow: 0 1px 0 #002a66; }
+.win-buttons { display: flex; gap: 6px; }
+.win-buttons .btn {
+  width: 26px; height: 20px; line-height: 18px; text-align: center;
+  border: 1px solid #0a2d66;
+  background: linear-gradient(180deg, #dfe9f6, #a9c3e8);
+  box-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 #6b8fb8;
+  color: #0a2d66; font-weight: 700; font-size: 12px; border-radius: 2px;
+}
+.win-buttons .btn:active { box-shadow: inset 0 -1px 0 #fff, inset 0 1px 0 #6b8fb8; transform: translateY(1px); }
+.win-buttons .btn.close { background: linear-gradient(180deg, #ffd5d5, #ff9b9b); color: #5a0000; }
 
 .header {
   text-align: center;
@@ -330,7 +335,7 @@ textarea#message {
 .pen-stroke {
   fill: none;
   stroke: var(--pink);
-  stroke-width: 2.2;
+  stroke-width: 2.8;
   stroke-linecap: round;
   stroke-linejoin: round;
   paint-order: stroke fill;
