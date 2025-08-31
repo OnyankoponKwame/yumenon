@@ -23,7 +23,7 @@ body.theme-vapor {
     ),
     linear-gradient(180deg, #3b1d60 0%, #2c1b4a 45%, #1a1233 100%);
   --text: #ffffff;
-  --card: #1a1233cc;
+  --card: #1a1233;
   --bgimg-opacity: 0.25;
   /* Use Yusei Magic for vapor mode */
   font-family: "LoveLetter", "Yusei Magic", system-ui, -apple-system, sans-serif;
@@ -40,7 +40,7 @@ body.theme-yume {
     radial-gradient(900px 700px at 50% 90%, #fff1f7 0%, transparent 60%),
     linear-gradient(180deg, #fff5fb 0%, #ffe9f5 40%, #ffe5ff 100%);
   --text: #6b5d6b;
-  --card: #ffffffcc;
+  --card: #ffffff;
   --bgimg-opacity: 0.35;
 }
 
@@ -177,7 +177,7 @@ body.theme-yume #love-tiles {
   background-repeat: repeat;
   transform: translate3d(0, 0, 0);
   will-change: transform;
-  animation: loveDrift 60s linear infinite;
+  animation: loveDrift 20s linear infinite;
 }
 @keyframes loveDrift {
   from {
@@ -546,7 +546,7 @@ textarea#message {
 }
 
 .preview-wrap {
-  margin-top: min(60vw, 360px);
+  margin-top: 5vw;
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.06),
@@ -559,6 +559,10 @@ textarea#message {
   backdrop-filter: blur(8px) saturate(140%);
   box-shadow: 0 10px 26px -12px rgba(56, 232, 221, 0.25),
     inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+/* Vapor: responsive offset tied to third-eye */
+body.theme-vapor .preview-wrap {
+  margin-top: clamp(24px, 8vw, 120px);
 }
 .preview {
   min-height: 200px;
