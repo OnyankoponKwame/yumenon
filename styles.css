@@ -629,6 +629,8 @@ body.theme-vapor .preview-wrap {
   fill-opacity: 0;
   transition: fill-opacity 0.6s ease;
 }
+/* Vapor: show fill from start; color/gradient is controlled via SVG */
+body.theme-vapor .pen-fill { fill-opacity: 1; }
 
 /* Stroke-mode paths */
 .stroke-path {

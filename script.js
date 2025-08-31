@@ -496,7 +496,7 @@
     const perChar = 80; // ms per char baseline
 
     const inVapor = document.body.classList.contains('theme-vapor');
-    const fillColor = inVapor ? 'rgba(255, 102, 179, 0.8)' : color;
+    const strokeColor = inVapor ? '#ffb3e1' : color; // neon-like outline for vapor
 
     lines.forEach((line, i) => {
       const y = padY + lineGap * (i + 1);
@@ -527,13 +527,46 @@
       textEl.textContent = line || " ";
       // Two layers: stroke (pen outline) and fill (ink)
       const textStroke = textEl.cloneNode(true);
-      textStroke.setAttribute("class", "pen-stroke");
+      textStroke.setAttribute('class', 'pen-stroke');
       g.appendChild(textStroke);
-      let textFill = textEl.cloneNode(true);
-      textFill.setAttribute("class", "pen-fill");
-      // Force desired fill color (vapor: #b19eff, yume: theme pink)
-      textFill.style.fill = fillColor;
-      g.appendChild(textFill);
+      const textFill = textEl.cloneNode(true);
+      textFill.setAttribute('class', 'pen-fill');
+      if (inVapor) {
+        // Glows behind core
+        const makeGlow = (w, col, opacity) => {
+          const gl = textEl.cloneNode(true);
+          gl.setAttribute('fill', 'none');
+          gl.setAttribute('stroke', col);
+          gl.setAttribute('stroke-opacity', String(opacity));
+          gl.setAttribute('stroke-width', String(w));
+          gl.setAttribute('stroke-linecap', 'round');
+          gl.setAttribute('stroke-linejoin', 'round');
+          return gl;
+        };
+        const glowPink = makeGlow(8, 'rgba(255, 102, 179, 0.40)', 1);
+        const glowCyan = makeGlow(4, 'rgba(56, 232, 221, 0.35)', 1);
+        g.insertBefore(glowPink, textStroke);
+        g.insertBefore(glowCyan, textStroke);
+
+        // Per-line diagonal gradient fill beneath stroke
+        const gradId = `vaporFillGrad${i}`;
+        const grad = el('linearGradient', { id: gradId, x1: '0%', y1: '0%', x2: '100%', y2: '100%' });
+        grad.appendChild(el('stop', { offset: '0%',  'stop-color': '#ff66b3' }));
+        grad.appendChild(el('stop', { offset: '50%', 'stop-color': '#b19eff' }));
+        grad.appendChild(el('stop', { offset: '100%','stop-color': '#38e8dd' }));
+        defs.appendChild(grad);
+        textFill.style.fill = `url(#${gradId})`;
+        textFill.style.fillOpacity = '1';
+        // place fill just beneath stroke (above glows)
+        g.insertBefore(textFill, textStroke);
+        // vivid core stroke
+        textStroke.setAttribute('stroke', '#ff66b3');
+        textStroke.setAttribute('stroke-width', '3.2');
+      } else {
+        // yume: cute solid fill, will fade near reveal end
+        textFill.style.fill = color;
+        g.appendChild(textFill);
+      }
       svg.appendChild(g);
 
       // Measure text width to know reveal distance
@@ -556,8 +589,8 @@
       totalDelay += dur + 280 / speedMul; // little pause between lines
     });
 
-    // set stroke color
-    svg.style.setProperty("--pink", color);
+    // set stroke color (used by pen-stroke CSS var)
+    svg.style.setProperty('--pink', strokeColor);
   }
 
   // Outline-based handwriting using opentype.js (graceful fallback)
