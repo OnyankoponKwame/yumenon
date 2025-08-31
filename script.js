@@ -105,6 +105,20 @@
     else playSvgWrite(TEXT, SPEED, COLOR);
   }
 
+  // Win2k caption buttons behavior
+  (function initWindowButtons(){
+    const card = document.querySelector('main.card');
+    const bodyPanel = document.querySelector('.win2k-body');
+    const tb = document.querySelector('.win2k-window .titlebar');
+    if (!card || !tb) return;
+    const minBtn = tb.querySelector('.caption-buttons .min');
+    const maxBtn = tb.querySelector('.caption-buttons .max');
+    const closeBtn = tb.querySelector('.caption-buttons .close');
+    minBtn?.addEventListener('click', (e)=>{ e.preventDefault(); bodyPanel?.classList.toggle('collapsed'); });
+    maxBtn?.addEventListener('click', (e)=>{ e.preventDefault(); card.classList.toggle('maximized'); });
+    closeBtn?.addEventListener('click', (e)=>{ e.preventDefault(); bodyPanel?.classList.add('collapsed'); });
+  })();
+
   // 初回自動再生
   requestAnimationFrame(() => {
     updateSpeedLabel();
