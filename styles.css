@@ -141,19 +141,19 @@ body.theme-switching #theme-fx { opacity: 1; background: radial-gradient(circle 
 
 /* 90s ADV window bar */
 .window-bar {
-  position: absolute; top: 0; left: 0; right: 0; height: 26px;
-  background: linear-gradient(180deg, #0a246a, #3a6ea5);
+  position: absolute; top: 0; left: 0; right: 0; height: 28px;
+  background: linear-gradient(180deg, #e4e1db, #cfcac2);
   border-top-left-radius: 6px; border-top-right-radius: 6px;
-  border-bottom: 1px solid #003c74;
-  display: flex; align-items: center; padding: 0 6px; gap: 10px;
+  border-bottom: 1px solid #808080;
+  display: flex; align-items: center; padding: 0 8px; gap: 10px;
 }
-.win-title { flex: 1; font-size: 12px; letter-spacing: .02em; color: #fff; text-shadow: 0 1px 0 #001a4a; font-family: Tahoma, "MS UI Gothic", system-ui, sans-serif; }
+.win-title { flex: 1; font-size: 12px; letter-spacing: .02em; color: #000; text-shadow: 0 1px 0 #ffffff; font-family: Tahoma, "MS UI Gothic", system-ui, sans-serif; }
 .win-buttons { display: flex; gap: 4px; }
 .win-buttons .btn {
-  width: 22px; height: 18px; line-height: 16px; text-align: center;
+  width: 30px; height: 22px; line-height: 20px; text-align: center;
   border: 1px solid #404040; border-top-color: #ffffff; border-left-color: #ffffff;
   background: #d4d0c8;
-  color: #000; font-weight: 700; font-size: 11px; border-radius: 2px;
+  color: #000; font-weight: 700; font-size: 12px; border-radius: 2px;
 }
 .win-buttons .btn:active { border: 1px solid #ffffff; border-top-color: #404040; border-left-color: #404040; }
 .win-buttons .btn.close { background: #d4d0c8; color: #000; }
@@ -373,19 +373,19 @@ textarea#message {
 #vapor-grid {
   position: fixed;
   inset: auto 0 0 0;
-  height: 62vh;
+  height: 75vh;
   z-index: 0;
   background: repeating-linear-gradient(
       0deg,
       rgba(255, 102, 179, 0.35) 0 2px,
-      transparent 2px 80px
+      transparent 2px 120px
     ),
     repeating-linear-gradient(
       90deg,
       rgba(56, 232, 221, 0.35) 0 2px,
-      transparent 2px 80px
+      transparent 2px 120px
     );
-  transform: perspective(700px) rotateX(58deg) scale(1.35);
+  transform: perspective(700px) rotateX(55deg) scale(1.5);
   transform-origin: bottom;
   filter: drop-shadow(0 -6px 10px rgba(255, 102, 179, 0.35));
 }
