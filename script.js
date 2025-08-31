@@ -258,20 +258,37 @@
       "#b19eff",
       "#38e8dd",
     ];
+    const occultGlyphs = ["✦","✧","✶","✷","✺","✹","☽","☾","☉","☥","✡","⌘"]; // safe mystical set
     const spawn = () => {
-      const h = document.createElement("div");
-      h.className = "heart";
-      const size = Math.round(10 + Math.random() * 18);
-      const left = Math.round(Math.random() * 100);
-      const dur = (10 + Math.random() * 10) / Math.max(0.2, SPEED); // slower speed => longer float
-      const col = colors[Math.floor(Math.random() * colors.length)];
-      h.style.setProperty("--s", size + "px");
-      h.style.left = left + "vw";
-      h.style.top = 100 + Math.random() * 20 + "vh";
-      h.style.setProperty("--t", dur + "s");
-      h.style.background = col;
-      elHearts.appendChild(h);
-      h.addEventListener("animationend", () => h.remove());
+      const inVapor = document.body.classList.contains('theme-vapor');
+      const node = document.createElement("div");
+      if (inVapor) {
+        node.className = "occult";
+        const fs = Math.round(14 + Math.random() * 22);
+        const left = Math.round(Math.random() * 100);
+        const dur = (12 + Math.random() * 12) / Math.max(0.2, SPEED);
+        const col = colors[Math.floor(Math.random() * colors.length)];
+        node.textContent = occultGlyphs[Math.floor(Math.random() * occultGlyphs.length)];
+        node.style.fontSize = fs + "px";
+        node.style.left = left + "vw";
+        node.style.top = 100 + Math.random() * 20 + "vh";
+        node.style.setProperty("--t", dur + "s");
+        node.style.setProperty("--occ", col);
+        node.style.setProperty("--r", (Math.random()*30-15).toFixed(1)+'deg');
+      } else {
+        node.className = "heart";
+        const size = Math.round(10 + Math.random() * 18);
+        const left = Math.round(Math.random() * 100);
+        const dur = (10 + Math.random() * 10) / Math.max(0.2, SPEED);
+        const col = colors[Math.floor(Math.random() * colors.length)];
+        node.style.setProperty("--s", size + "px");
+        node.style.left = left + "vw";
+        node.style.top = 100 + Math.random() * 20 + "vh";
+        node.style.setProperty("--t", dur + "s");
+        node.style.background = col;
+      }
+      elHearts.appendChild(node);
+      node.addEventListener("animationend", () => node.remove());
     };
     // Seed a few
     for (let i = 0; i < 14; i++) setTimeout(spawn, i * 200);
@@ -307,6 +324,14 @@
         glint.style.top = p.y + "%";
       };
       setInterval(move, 2600);
+      // Clicking moving heart in vapor → switch back to yume
+      glint.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (document.body.classList.contains('theme-vapor')) {
+          setTheme('yume');
+          playNow();
+        }
+      });
     }
 
     // Move the SVG pupil to chase the heart-glint inside the triangle

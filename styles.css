@@ -579,6 +579,18 @@ textarea#message {
   animation: rise var(--t, 12s) linear forwards;
   filter: drop-shadow(0 0 8px rgba(255, 102, 179, 0.45));
 }
+.occult {
+  position: absolute;
+  transform: translate(-50%, -50%) rotate(var(--r, 0deg));
+  animation: rise var(--t, 14s) linear forwards;
+  color: var(--occ, #ffd1f0);
+  text-shadow: 0 0 8px rgba(255, 102, 179, 0.45),
+    0 0 12px rgba(56, 232, 221, 0.35);
+  opacity: 0.9;
+  pointer-events: none;
+  font-family: "Segoe UI Symbol", "Noto Sans Symbols 2", "Apple Symbols",
+    system-ui, sans-serif;
+}
 .heart::before,
 .heart::after {
   content: "";
@@ -614,22 +626,36 @@ textarea#message {
     rgba(255, 255, 255, 0.08),
     rgba(255, 255, 255, 0.02)
   );
+  /* Outer + inner glow (replace misaligned ::before border) */
   box-shadow: 0 0 36px rgba(255, 102, 179, 0.35),
-    0 0 64px rgba(56, 232, 221, 0.25);
+    0 0 64px rgba(56, 232, 221, 0.25), inset 0 0 14px rgba(56, 232, 221, 0.25),
+    inset 0 0 18px rgba(255, 102, 179, 0.18);
   border: 2px solid rgba(255, 102, 179, 0.35);
   z-index: 2;
   pointer-events: none;
   mix-blend-mode: screen;
 }
+/* Allow clicking the moving heart glint in vapor mode */
+body.theme-vapor #third-eye {
+  pointer-events: auto;
+}
+#third-eye .heart-glint {
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 3;
+}
 #third-eye::before {
-  /* inner neon border */
-  content: "";
-  position: absolute;
-  inset: 6px;
-  clip-path: inherit;
-  border: 2px solid rgba(56, 232, 221, 0.35);
-  box-shadow: 0 0 24px rgba(56, 232, 221, 0.35),
-    inset 0 0 18px rgba(255, 102, 179, 0.25);
+  pointer-events: none;
+}
+#third-eye .rays {
+  pointer-events: none;
+}
+#third-eye .eye-svg {
+  pointer-events: none;
+  z-index: 1;
+}
+#third-eye::before {
+  content: none;
 }
 /* Rays inside triangle */
 #third-eye .rays {
@@ -722,11 +748,31 @@ textarea#message {
 .eye-outline {
   fill: none;
   stroke: var(--pink);
-  stroke-width: 2.2;
+  stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
   filter: drop-shadow(0 0 8px rgba(255, 102, 179, 0.45))
     drop-shadow(0 0 10px rgba(56, 232, 221, 0.35));
+}
+.eye-iris-ring {
+  fill: none;
+  stroke: var(--pink);
+  stroke-width: 1.6;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 4px rgba(255, 102, 179, 0.35));
+}
+.eye-slit {
+  fill: none;
+  stroke: var(--pink);
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  opacity: 0.95;
+  filter: drop-shadow(0 0 6px rgba(56, 232, 221, 0.35));
+}
+.eye-hatch {
+  stroke: var(--pink);
+  stroke-width: 1.2;
+  opacity: 0.55;
 }
 .eye-pupil {
   fill: url(#pupilGrad);
@@ -927,7 +973,7 @@ body.theme-vapor #global-noise {
 .caption-buttons {
   margin-left: auto;
   display: flex;
-  gap: 6px;
+  gap: 5px;
 }
 .caption-buttons button {
   width: 16px;
@@ -953,7 +999,7 @@ body.theme-vapor #global-noise {
 .caption-buttons .max::before {
   height: 6px;
   width: 8px;
-  margin-top: 3px;
+  margin-top: 1px;
   border: 1px solid #000;
   background: transparent;
 }
