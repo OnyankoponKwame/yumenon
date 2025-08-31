@@ -139,6 +139,21 @@ body.theme-switching #theme-fx { opacity: 1; background: radial-gradient(circle 
   position: relative;
 }
 
+/* 90s ADV window bar */
+.window-bar {
+  position: absolute; top: 0; left: 0; right: 0; height: 34px;
+  background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.02));
+  border-top-left-radius: 24px; border-top-right-radius: 24px;
+  border-bottom: 1px solid rgba(255,255,255,.15);
+  display: flex; align-items: center; padding: 0 12px; gap: 10px;
+}
+.win-dots { display: flex; gap: 6px; }
+.win-dots .dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 6px rgba(255,255,255,.35) inset, 0 0 8px rgba(255,255,255,.25); }
+.win-dots .dot.red { background: #ff6b6b; }
+.win-dots .dot.yellow { background: #ffd93d; }
+.win-dots .dot.green { background: #6bffb0; }
+.win-title { font-size: 12px; letter-spacing: .08em; color: rgba(255,255,255,.85); text-shadow: 0 0 6px rgba(255,102,179,.4); }
+
 .header {
   text-align: center;
 }
