@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Evening Novel</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        /* Evening background */
+        background: radial-gradient(
+            1200px 800px at 80% 10%,
+            rgba(255, 180, 120, 0.25),
+            transparent 60%
+          ),
+          radial-gradient(
+            900px 700px at 10% 90%,
+            rgba(120, 160, 255, 0.18),
+            transparent 60%
+          ),
+          linear-gradient(180deg, #f48a62 0%, #a55bc2 55%, #3b2f5e 100%);
+        color: #ffffff;
+        font-family: "Hiragino Mincho ProN", "Yu Mincho", "游明朝",
+          "Noto Serif JP", serif;
+      }
+      .frame {
+        box-sizing: border-box;
+        width: min(900px, 92vw);
+        margin: 6vh auto;
+        border-radius: 10px;
+        background: rgba(20, 16, 32, 0.45);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35),
+          inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(6px) saturate(120%);
+        padding: clamp(16px, 4vw, 28px);
+        min-height: 60vh;
+        display: block;
+        overflow: auto;
+      }
+      .text {
+        font-size: clamp(16px, 2.2vw, 22px);
+        line-height: 2;
+        letter-spacing: 0.02em;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+        user-select: none;
+      }
+      .line { margin: 0 0 1em 0; }
+      .cursor {
+        display: inline-block;
+        width: 0.6ch;
+      }
+      .cursor::after {
+        content: "";
+        display: inline-block;
+        width: 2px;
+        height: 1.1em;
+        background: #fff;
+        animation: blink 0.9s steps(1) infinite;
+        vertical-align: -0.1em;
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+      .hint {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="frame" id="frame" role="button" aria-label="次の台詞へ">
+      <div class="text" id="text"></div>
+    </main>
+    <div class="hint">クリックで進む</div>
+
+    <script>
+      const lines = [
+        "「先生は、不幸なコが好きなんです。不幸だけれど、健気に運命に立ち向かっている弱々しい魂。そんな相手を助けることで、自分が大きくなったような錯覚を得て満足するんです」",
+        "「そうなんだろうか？僕は可哀想な少女を救うために日夜…」",
+        "「嘘。可哀想な自分を…でしょ？そして先生は、自分を慕う、かよわい相手を思う存分にいたぶって安心するんです」",
+        "「いやしかし、ぼぼ僕は…」",
+        "「自信のない自分を棚に上げて、自分よりも弱っている相手に手を差し伸べる。自分以外のなにかを救うフリをすることで自分を納得させるんです」",
+        "「けれど僕は、そうじゃなくて、信じたいから…安心したかったから」",
+        "「そう…ですよね。自分を慕ってくれる弱者。でも、その弱者が運命に立ち向かって羽ばたこうとすると、我慢できなくなってしまう。いつまでも自分だけの標本箱の中にコレクションしておきたいのに…」",
+      ];
+
+      const elText = document.getElementById("text");
+      const elFrame = document.getElementById("frame");
+      let idx = 0;
+      let typing = false;
+
+      function typeLine(s) {
+        typing = true;
+        // remove previous cursor
+        const prev = elText.querySelector('.cursor');
+        if (prev) prev.remove();
+        // create new line with its own cursor
+        const lineEl = document.createElement('div');
+        lineEl.className = 'line';
+        const span = document.createElement('span');
+        lineEl.appendChild(span);
+        const cursor = document.createElement('span');
+        cursor.className = 'cursor';
+        lineEl.appendChild(cursor);
+        elText.appendChild(lineEl);
+
+        let i = 0;
+        const base = 24; // ms per char
+        const timer = setInterval(() => {
+          span.textContent = s.slice(0, ++i);
+          // keep latest line in view
+          lineEl.scrollIntoView({ block: 'end', behavior: 'smooth' });
+          if (i >= s.length) {
+            clearInterval(timer);
+            cursor.remove();
+            typing = false;
+          }
+        }, base);
+      }
+
+      function next() {
+        if (typing) return; // ignore during typing
+        if (idx < lines.length) {
+          typeLine(lines[idx++]);
+        } else {
+          // 終了: クリックでトップに戻すなど
+          window.history.back();
+        }
+      }
+
+      // 初期表示（1行目を追加）
+      typeLine(lines[idx++]);
+      // クリックで進める
+      elFrame.addEventListener("click", next);
+      // キーボードでも
+      document.addEventListener("keydown", (e) => {
+        if (e.key === " " || e.key === "Enter") next();
+      });
+    </script>
+  </body>
+</html>

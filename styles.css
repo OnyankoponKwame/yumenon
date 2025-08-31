@@ -569,13 +569,13 @@ textarea#message {
 body.theme-vapor .preview-wrap {
   /* Keep preview below the triangle: 8vh top + min(60vw,360px) height + buffer */
   margin-top: clamp(96px, calc(8vh + min(60vw, 360px) + 24px), 420px);
-  border: none;
+  /* border: none; */
 }
 /* Desktop tuning: bring preview closer under the triangle on wide screens */
 @media (min-width: 1024px) {
   body.theme-vapor .preview-wrap {
-    /* gentler offset: 6vh + 55% of triangle height + small buffer */
-    margin-top: clamp(72px, calc(6vh + min(60vw, 360px) * 0.55 + 8px), 280px);
+    /* larger offset on desktop to avoid overlap */
+    margin-top: clamp(96px, calc(7vh + min(60vw, 360px) * 0.65 + 16px), 360px);
   }
 }
 
@@ -946,7 +946,8 @@ body.theme-vapor #third-eye {
   font-size: 12px;
   opacity: 0.9;
   animation: pushBlink 1.2s steps(2) infinite;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: pointer;
   z-index: 6;
 }
 @keyframes pushBlink {

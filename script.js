@@ -11,26 +11,26 @@
 
 はーとにショットガン撃たれたくらいショックをうけてしまって、ああ、
 
-でもいっぽうで　とってもつらいのでさよならしてほしい、
+でもいっぽうで とってもつらいのでさよならしてほしい、
 
-すきすぎでわ？　でもほかのひともそうなのかも
+すきすぎでわ？ でもほかのひともそうなのかも
 かれぴつくってといっておきながらひどいむじゅん
 
 プレゼントもーだるでえらべます、
 
 じつはとーてもたのしみだったのだけど
-パソコンつくるのすしだし　喜んでもらえたらいいなって
+パソコンつくるのすしだし 喜んでもらえたらいいなって
 
-いっそ嫌いと言われれば　クッソーなんだったんだーと思うかもだけど、この妄想は終わるんだと思います
+いっそ嫌いと言われれば クッソーなんだったんだーと思うかもだけど、この妄想は終わるんだと思います
 
-幸せになったのに不幸なフリずっとされるとか　くらいかなぁ
+幸せになったのに不幸なフリずっとされるとか くらいかなぁ
 
 友達になれるくらいの人で2人きりで苦手なお酒飲んでもいいくらいってもうけっこー好きじゃん！
 きゃー！
 
 自己矛盾におちいっています。うそぶいている
 
-好きです付き合ってといえる自信がないだけなんですね本当は　実際全く器ではないのでそれでいんだけど　
+好きです付き合ってといえる自信がないだけなんですね本当は 実際全く器ではないのでそれでいんだけど 
 
 それって、好きってことじゃん！`;
   const VAPOR_TEXT = `ネオンの海で、うかぶ心。
@@ -48,7 +48,7 @@
 
   let TEXT = YUME_TEXT;
   // 表現モード: 'outline'（フォント輪郭描画） / 'stroke'（テンプレ字画） / 'svg'（リビール） / 'type'
-  const MODE = "svg";
+  const MODE = "outline";
   // スピード倍率（UI削除に伴い固定値）
   let SPEED = 0.5;
   const elBgFile = document.getElementById("bgImage");
@@ -92,7 +92,9 @@
     }
     // Notify listeners of theme change
     try {
-      document.dispatchEvent(new CustomEvent("themechange", { detail: { name } }));
+      document.dispatchEvent(
+        new CustomEvent("themechange", { detail: { name } })
+      );
     } catch (_) {}
   };
   setTheme("yume");
@@ -146,6 +148,15 @@
   requestAnimationFrame(() => {
     playNow();
   });
+
+  // PUSH START -> navigate to novel screen
+  const pushStart = document.getElementById("push-start");
+  if (pushStart) {
+    pushStart.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.location.href = "novel.html";
+    });
+  }
   // リプレイ/スピードのUI・イベントは削除
 
   // Yume heart click -> transition to vapor theme
@@ -181,15 +192,15 @@
       // stop wandering before switching theme
       stopYumeWander();
       // add breaking class to animate the heart pieces
-      yumeHeartCore.classList.add('breaking');
+      yumeHeartCore.classList.add("breaking");
       // add a temporary crack overlay inside the heart
-      const crack = document.createElement('div');
-      crack.className = 'crack';
+      const crack = document.createElement("div");
+      crack.className = "crack";
       // simple SVG crack graphic inline
       const crackSvg = encodeURIComponent(
         "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>" +
           "<path d='M42 22 L52 36 L46 44 L58 56 L50 70 L62 82' stroke='rgba(255,255,255,0.9)' stroke-width='3' fill='none'/>" +
-        "</svg>"
+          "</svg>"
       );
       crack.style.backgroundImage = `url("data:image/svg+xml;utf8,${crackSvg}")`;
       yumeHeartCore.appendChild(crack);
@@ -199,9 +210,12 @@
         setTheme("vapor");
         // clean up
         crack.remove();
-        yumeHeartCore.classList.remove('breaking');
+        yumeHeartCore.classList.remove("breaking");
         // remove switching after fade completes
-        setTimeout(() => document.body.classList.remove("theme-switching"), 600);
+        setTimeout(
+          () => document.body.classList.remove("theme-switching"),
+          600
+        );
         // replay with new content
         playNow();
         // allow future clicks when returning to yume mode
@@ -520,8 +534,8 @@
     let totalDelay = 0; // ms
     const perChar = 80; // ms per char baseline
 
-    const inVapor = document.body.classList.contains('theme-vapor');
-    const strokeColor = inVapor ? '#ffb3e1' : color; // neon-like outline for vapor
+    const inVapor = document.body.classList.contains("theme-vapor");
+    const strokeColor = inVapor ? "#ffb3e1" : color; // neon-like outline for vapor
 
     lines.forEach((line, i) => {
       const y = padY + lineGap * (i + 1);
@@ -552,41 +566,51 @@
       textEl.textContent = line || " ";
       // Two layers: stroke (pen outline) and fill (ink)
       const textStroke = textEl.cloneNode(true);
-      textStroke.setAttribute('class', 'pen-stroke');
+      textStroke.setAttribute("class", "pen-stroke");
       g.appendChild(textStroke);
       const textFill = textEl.cloneNode(true);
-      textFill.setAttribute('class', 'pen-fill');
+      textFill.setAttribute("class", "pen-fill");
       if (inVapor) {
         // Glows behind core
         const makeGlow = (w, col, opacity) => {
           const gl = textEl.cloneNode(true);
-          gl.setAttribute('fill', 'none');
-          gl.setAttribute('stroke', col);
-          gl.setAttribute('stroke-opacity', String(opacity));
-          gl.setAttribute('stroke-width', String(w));
-          gl.setAttribute('stroke-linecap', 'round');
-          gl.setAttribute('stroke-linejoin', 'round');
+          gl.setAttribute("fill", "none");
+          gl.setAttribute("stroke", col);
+          gl.setAttribute("stroke-opacity", String(opacity));
+          gl.setAttribute("stroke-width", String(w));
+          gl.setAttribute("stroke-linecap", "round");
+          gl.setAttribute("stroke-linejoin", "round");
           return gl;
         };
-        const glowPink = makeGlow(8, 'rgba(255, 102, 179, 0.40)', 1);
-        const glowCyan = makeGlow(4, 'rgba(56, 232, 221, 0.35)', 1);
+        const glowPink = makeGlow(8, "rgba(255, 102, 179, 0.40)", 1);
+        const glowCyan = makeGlow(4, "rgba(56, 232, 221, 0.35)", 1);
         g.insertBefore(glowPink, textStroke);
         g.insertBefore(glowCyan, textStroke);
 
         // Per-line diagonal gradient fill beneath stroke
         const gradId = `vaporFillGrad${i}`;
-        const grad = el('linearGradient', { id: gradId, x1: '0%', y1: '0%', x2: '100%', y2: '100%' });
-        grad.appendChild(el('stop', { offset: '0%',  'stop-color': '#ff66b3' }));
-        grad.appendChild(el('stop', { offset: '50%', 'stop-color': '#b19eff' }));
-        grad.appendChild(el('stop', { offset: '100%','stop-color': '#38e8dd' }));
+        const grad = el("linearGradient", {
+          id: gradId,
+          x1: "0%",
+          y1: "0%",
+          x2: "100%",
+          y2: "100%",
+        });
+        grad.appendChild(el("stop", { offset: "0%", "stop-color": "#ff66b3" }));
+        grad.appendChild(
+          el("stop", { offset: "50%", "stop-color": "#b19eff" })
+        );
+        grad.appendChild(
+          el("stop", { offset: "100%", "stop-color": "#38e8dd" })
+        );
         defs.appendChild(grad);
         textFill.style.fill = `url(#${gradId})`;
-        textFill.style.fillOpacity = '1';
+        textFill.style.fillOpacity = "1";
         // place fill just beneath stroke (above glows)
         g.insertBefore(textFill, textStroke);
         // vivid core stroke
-        textStroke.setAttribute('stroke', '#ff66b3');
-        textStroke.setAttribute('stroke-width', '3.2');
+        textStroke.setAttribute("stroke", "#ff66b3");
+        textStroke.setAttribute("stroke-width", "3.2");
       } else {
         // yume: cute solid fill, will fade near reveal end
         textFill.style.fill = color;
@@ -615,7 +639,7 @@
     });
 
     // set stroke color (used by pen-stroke CSS var)
-    svg.style.setProperty('--pink', strokeColor);
+    svg.style.setProperty("--pink", strokeColor);
   }
 
   // Outline-based handwriting using opentype.js (graceful fallback)
