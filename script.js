@@ -90,6 +90,10 @@
       if (elTitle) elTitle.textContent = VAPOR_TITLE;
       if (elSub) elSub.textContent = VAPOR_SUB;
     }
+    // Notify listeners of theme change
+    try {
+      document.dispatchEvent(new CustomEvent("themechange", { detail: { name } }));
+    } catch (_) {}
   };
   setTheme("yume");
 
@@ -149,11 +153,33 @@
   const themeFx = document.getElementById("theme-fx");
   if (yumeHeartCore) {
     let breaking = false;
+    let yumeWanderId = null;
+
+    const startYumeWander = () => {
+      if (!document.body.classList.contains("theme-yume")) return;
+      // Avoid multiple intervals
+      if (yumeWanderId) clearInterval(yumeWanderId);
+      // Seed initial move
+      setTimeout(() => {
+        if (document.body.classList.contains("theme-yume")) wanderOnce();
+      }, 400);
+      yumeWanderId = setInterval(() => {
+        if (document.body.classList.contains("theme-yume")) wanderOnce();
+      }, 2400);
+    };
+    const stopYumeWander = () => {
+      if (yumeWanderId) {
+        clearInterval(yumeWanderId);
+        yumeWanderId = null;
+      }
+    };
     yumeHeartCore.addEventListener("click", () => {
       if (breaking) return;
       breaking = true;
       // start transition overlay
       document.body.classList.add("theme-switching");
+      // stop wandering before switching theme
+      stopYumeWander();
       // add breaking class to animate the heart pieces
       yumeHeartCore.classList.add('breaking');
       // add a temporary crack overlay inside the heart
@@ -184,21 +210,20 @@
     });
 
     // Make heart wander across the screen while in yume theme
-    const wander = () => {
-      if (!document.body.classList.contains("theme-yume")) return; // stop after switch
+    const wanderOnce = () => {
       const marginVh = 18; // vertical safe margins
       const topVh = Math.round(marginVh + Math.random() * (70 - marginVh));
       const leftVw = Math.round(15 + Math.random() * 70); // keep inside horizontally
       yumeHeartCore.style.top = topVh + "vh";
       yumeHeartCore.style.left = leftVw + "vw";
     };
-    // Seed and then move periodically
-    setTimeout(wander, 400);
-    const wanderId = setInterval(wander, 2400);
-    // Clear interval on theme switch
-    document.addEventListener("transitionend", () => {
-      if (!document.body.classList.contains("theme-yume"))
-        clearInterval(wanderId);
+    // Start initial wandering (initial theme is yume)
+    startYumeWander();
+    // React to theme changes explicitly
+    document.addEventListener("themechange", (e) => {
+      const name = e && e.detail && e.detail.name;
+      if (name === "yume") startYumeWander();
+      else stopYumeWander();
     });
   }
 

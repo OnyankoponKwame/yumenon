@@ -42,6 +42,11 @@ body.theme-yume {
   --text: #6b5d6b;
   --card: #ffffff;
   --bgimg-opacity: 0.35;
+  /* Win2k titlebar palette: pink-based for yume mode */
+  --cap-dark: #c83f8f;  /* deep pink */
+  --cap-mid:  #ff89c5;  /* bright pink */
+  --cap-lite: #ffd1f0;  /* pastel edge */
+  --caption-text: #ffffff;
 }
 
 * {
@@ -564,13 +569,13 @@ textarea#message {
 body.theme-vapor .preview-wrap {
   /* Keep preview below the triangle: 8vh top + min(60vw,360px) height + buffer */
   margin-top: clamp(96px, calc(8vh + min(60vw, 360px) + 24px), 420px);
-  /* border: none; */
+  border: none;
 }
 /* Desktop tuning: bring preview closer under the triangle on wide screens */
 @media (min-width: 1024px) {
   body.theme-vapor .preview-wrap {
     /* gentler offset: 6vh + 55% of triangle height + small buffer */
-    margin-top: clamp(72px, calc(6vh + min(60vw, 360px) * 0.55 + 55px), 280px);
+    margin-top: clamp(72px, calc(6vh + min(60vw, 360px) * 0.55 + 8px), 280px);
   }
 }
 
