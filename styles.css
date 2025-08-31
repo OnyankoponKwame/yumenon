@@ -692,12 +692,11 @@ body.theme-vapor #global-noise { display: block; }
   content:""; display:block; margin: 0 auto; margin-top: 5px; width: 8px; height: 2px; background: #000;
 }
 .caption-buttons .max::before{ height: 6px; width: 8px; margin-top: 3px; border: 1px solid #000; background: transparent; }
-.caption-buttons .close::before{
-  width: 8px; height: 8px; margin-top: 3px;
-  background: conic-gradient(from 45deg, #000 0 25%, transparent 0 50%, #000 0 75%, transparent 0);
-  -webkit-mask: linear-gradient(#000 0 0) center/100% 2px no-repeat, linear-gradient(#000 0 0) center/2px 100% no-repeat;
-  mask: linear-gradient(#000 0 0) center/100% 2px no-repeat, linear-gradient(#000 0 0) center/2px 100% no-repeat;
-}
+.caption-buttons .close{ position: relative; }
+.caption-buttons .close::before,
+.caption-buttons .close::after{ content:""; position:absolute; left:50%; top:6px; width:8px; height:2px; background:#000; transform-origin: center; }
+.caption-buttons .close::before{ transform: translateX(-50%) rotate(45deg); }
+.caption-buttons .close::after{ transform: translateX(-50%) rotate(-45deg); }
 .caption-buttons button:active{
   box-shadow: inset 1px 1px 0 var(--btn-sh), inset -1px -1px 0 var(--btn-hi), 0 0 0 1px #000;
 }
