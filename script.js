@@ -3,7 +3,6 @@
   const $$ = (sel, el = document) => Array.from(el.querySelectorAll(sel));
 
   const elPreview = $("#preview");
-  const elReplay = $("#replay");
   const elTitle = document.querySelector(".header h1");
   const elSub = document.querySelector(".header .sub");
 
@@ -42,18 +41,16 @@
 ぼくはまだ上手に言えないけど、
 この光が消えないうちに、好きって言う。`;
 
-  const YUME_TITLE = "夢かわいい";
-  const YUME_SUB = "手書き風に想いを届けよう…♡";
-  const VAPOR_TITLE = "ひみつのこと";
-  const VAPOR_SUB = "夜のグリッドに想いを流す";
+  const YUME_TITLE = "Love Letter";
+  const YUME_SUB = "iをこわしてね";
+  const VAPOR_TITLE = "A letter with hidden feelings";
+  const VAPOR_SUB = "iをつかまえてね";
 
   let TEXT = YUME_TEXT;
   // 表現モード: 'outline'（フォント輪郭描画） / 'stroke'（テンプレ字画） / 'svg'（リビール） / 'type'
   const MODE = "svg";
-  // スピード倍率（1 = 標準、上げると速く）。UIスライダーで変更。
-  const elSpeed = document.getElementById("speed");
-  const elSpeedVal = document.getElementById("speedVal");
-  let SPEED = elSpeed ? parseFloat(elSpeed.value) : 0.5;
+  // スピード倍率（UI削除に伴い固定値）
+  let SPEED = 0.5;
   const elBgFile = document.getElementById("bgImage");
   const elBgOpacity = document.getElementById("bgOpacity");
   const elBgClear = document.getElementById("bgClear");
@@ -139,62 +136,51 @@
     });
   })();
 
-  // 初回自動再生
+  // (drag-to-move removed by request)
+
+  // 初回自動再生（PUSH START の一時表示は廃止）
   requestAnimationFrame(() => {
-    updateSpeedLabel();
     playNow();
-    // show push start label briefly
-    const ps = document.getElementById("push-start");
-    if (ps) {
-      ps.style.display = "block";
-      const hide = () => {
-        ps.style.display = "none";
-        document.removeEventListener("click", hide);
-        document.removeEventListener("keydown", hide);
-      };
-      setTimeout(hide, 3000);
-      document.addEventListener("click", hide);
-      document.addEventListener("keydown", hide);
-    }
   });
-
-  // リプレイ
-  elReplay?.addEventListener("click", playNow);
-
-  // スピードスライダー: 表示更新 + 変更時にリプレイ
-  function updateSpeedLabel() {
-    if (elSpeedVal)
-      elSpeedVal.textContent = `${SPEED.toFixed(1)}x（小さいほどゆっくり）`;
-  }
-  if (elSpeed) {
-    elSpeed.addEventListener("input", () => {
-      SPEED = parseFloat(elSpeed.value);
-      updateSpeedLabel();
-    });
-    elSpeed.addEventListener("change", () => {
-      SPEED = parseFloat(elSpeed.value);
-      updateSpeedLabel();
-      playNow();
-    });
-  }
+  // リプレイ/スピードのUI・イベントは削除
 
   // Yume heart click -> transition to vapor theme
   const yumeHeartCore = document.querySelector("#yume-heart .core");
   const themeFx = document.getElementById("theme-fx");
   if (yumeHeartCore) {
+    let breaking = false;
     yumeHeartCore.addEventListener("click", () => {
+      if (breaking) return;
+      breaking = true;
+      // start transition overlay
       document.body.classList.add("theme-switching");
-      // small delay for overlay, then switch theme
+      // add breaking class to animate the heart pieces
+      yumeHeartCore.classList.add('breaking');
+      // add a temporary crack overlay inside the heart
+      const crack = document.createElement('div');
+      crack.className = 'crack';
+      // simple SVG crack graphic inline
+      const crackSvg = encodeURIComponent(
+        "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>" +
+          "<path d='M42 22 L52 36 L46 44 L58 56 L50 70 L62 82' stroke='rgba(255,255,255,0.9)' stroke-width='3' fill='none'/>" +
+        "</svg>"
+      );
+      crack.style.backgroundImage = `url("data:image/svg+xml;utf8,${crackSvg}")`;
+      yumeHeartCore.appendChild(crack);
+
+      // after the break animation, switch theme
       setTimeout(() => {
         setTheme("vapor");
+        // clean up
+        crack.remove();
+        yumeHeartCore.classList.remove('breaking');
         // remove switching after fade completes
-        setTimeout(
-          () => document.body.classList.remove("theme-switching"),
-          900
-        );
+        setTimeout(() => document.body.classList.remove("theme-switching"), 600);
         // replay with new content
         playNow();
-      }, 200);
+        // allow future clicks when returning to yume mode
+        breaking = false;
+      }, 720);
     });
 
     // Make heart wander across the screen while in yume theme
@@ -258,9 +244,22 @@
       "#b19eff",
       "#38e8dd",
     ];
-    const occultGlyphs = ["✦","✧","✶","✷","✺","✹","☽","☾","☉","☥","✡","⌘"]; // safe mystical set
+    const occultGlyphs = [
+      "✦",
+      "✧",
+      "✶",
+      "✷",
+      "✺",
+      "✹",
+      "☽",
+      "☾",
+      "☉",
+      "☥",
+      "✡",
+      "⌘",
+    ]; // safe mystical set
     const spawn = () => {
-      const inVapor = document.body.classList.contains('theme-vapor');
+      const inVapor = document.body.classList.contains("theme-vapor");
       const node = document.createElement("div");
       if (inVapor) {
         node.className = "occult";
@@ -268,13 +267,17 @@
         const left = Math.round(Math.random() * 100);
         const dur = (12 + Math.random() * 12) / Math.max(0.2, SPEED);
         const col = colors[Math.floor(Math.random() * colors.length)];
-        node.textContent = occultGlyphs[Math.floor(Math.random() * occultGlyphs.length)];
+        node.textContent =
+          occultGlyphs[Math.floor(Math.random() * occultGlyphs.length)];
         node.style.fontSize = fs + "px";
         node.style.left = left + "vw";
         node.style.top = 100 + Math.random() * 20 + "vh";
         node.style.setProperty("--t", dur + "s");
         node.style.setProperty("--occ", col);
-        node.style.setProperty("--r", (Math.random()*30-15).toFixed(1)+'deg');
+        node.style.setProperty(
+          "--r",
+          (Math.random() * 30 - 15).toFixed(1) + "deg"
+        );
       } else {
         node.className = "heart";
         const size = Math.round(10 + Math.random() * 18);
@@ -325,10 +328,10 @@
       };
       setInterval(move, 2600);
       // Clicking moving heart in vapor → switch back to yume
-      glint.addEventListener('click', (e) => {
+      glint.addEventListener("click", (e) => {
         e.preventDefault();
-        if (document.body.classList.contains('theme-vapor')) {
-          setTheme('yume');
+        if (document.body.classList.contains("theme-vapor")) {
+          setTheme("yume");
           playNow();
         }
       });
@@ -492,6 +495,9 @@
     let totalDelay = 0; // ms
     const perChar = 80; // ms per char baseline
 
+    const inVapor = document.body.classList.contains('theme-vapor');
+    const fillColor = inVapor ? 'rgba(255, 102, 179, 0.8)' : color;
+
     lines.forEach((line, i) => {
       const y = padY + lineGap * (i + 1);
 
@@ -522,9 +528,11 @@
       // Two layers: stroke (pen outline) and fill (ink)
       const textStroke = textEl.cloneNode(true);
       textStroke.setAttribute("class", "pen-stroke");
-      const textFill = textEl.cloneNode(true);
-      textFill.setAttribute("class", "pen-fill");
       g.appendChild(textStroke);
+      let textFill = textEl.cloneNode(true);
+      textFill.setAttribute("class", "pen-fill");
+      // Force desired fill color (vapor: #b19eff, yume: theme pink)
+      textFill.style.fill = fillColor;
       g.appendChild(textFill);
       svg.appendChild(g);
 
@@ -539,9 +547,11 @@
       animateRectWidth(maskRect, () => measureWidth() + 8, dur, totalDelay);
 
       // After reveal, fade in fill slightly for ink look
-      setTimeout(() => {
-        textFill.style.fillOpacity = "1.0";
-      }, totalDelay + dur - 120);
+      if (textFill) {
+        setTimeout(() => {
+          textFill.style.fillOpacity = "1.0";
+        }, totalDelay + dur - 120);
+      }
 
       totalDelay += dur + 280 / speedMul; // little pause between lines
     });

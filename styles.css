@@ -25,6 +25,8 @@ body.theme-vapor {
   --text: #ffffff;
   --card: #1a1233cc;
   --bgimg-opacity: 0.25;
+  /* Use Yusei Magic for vapor mode */
+  font-family: "LoveLetter", "Yusei Magic", system-ui, -apple-system, sans-serif;
 }
 
 /* Theme: Yumekawa (pastel) */
@@ -51,9 +53,9 @@ body {
 }
 body {
   margin: 0;
-  font-family: "Yomogi", "Yusei Magic", "Hiragino Maru Gothic ProN",
-    "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "UD Digi Kyokasho N-R",
-    system-ui, -apple-system, sans-serif;
+  font-family: "LoveLetter", "Yomogi", "Yusei Magic",
+    "Hiragino Maru Gothic ProN", "Hiragino Kaku Gothic ProN", "Yu Gothic UI",
+    "UD Digi Kyokasho N-R", system-ui, -apple-system, sans-serif;
   color: var(--text);
   background: var(--bg-grad);
   overflow-x: hidden;
@@ -78,6 +80,14 @@ body {
 }
 body { font-family: MyHand, ... }
 */
+
+/* LoveLetter font for ASCII (English) only */
+@font-face {
+  font-family: "LoveLetter";
+  src: url("assets/fonts/LoveLetter.TTF") format("truetype");
+  font-display: swap;
+  unicode-range: U+0020-007E; /* Basic Latin */
+}
 
 .bg-confetti {
   display: none;
@@ -131,39 +141,59 @@ body.theme-yume .bg-confetti {
 
 /* Theme visibility toggles */
 body.theme-yume #vapor-grid,
-body.theme-yume #third-eye,
-body.theme-yume #vhs-noise {
+body.theme-yume #third-eye {
   display: none;
 }
 body.theme-vapor #vapor-grid,
-body.theme-vapor #third-eye,
-body.theme-vapor #vhs-noise {
+body.theme-vapor #third-eye {
   display: block;
 }
-/* LOVE tiling (tiny) */
+/* LOVE tiling (SVG) — transform animation to avoid flicker */
 #love-tiles {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  display: none;
-  opacity: 0.85;
+  display: none; /* hidden by default; show only in vapor */
+  /* Replace element opacity with background-color to avoid whole-layer opacity */
+  background-color: rgba(0, 0, 0, 0);
 }
+/* Show love tiles only in vapor mode */
 body.theme-vapor #love-tiles {
   display: block;
 }
-#love-tiles {
+body.theme-yume #love-tiles {
+  display: none;
+}
+#love-tiles::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -240px; /* headroom so we can move without edges showing */
+  height: calc(100% + 480px);
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='8'><text x='0' y='7' font-family='monospace' font-size='7' fill='%23FFFFFF' fill-opacity='0.35'>LOVE</text></svg>");
   background-size: 16px 8px;
   background-repeat: repeat;
-  mix-blend-mode: normal;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  animation: loveDrift 60s linear infinite;
+}
+@keyframes loveDrift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 240px, 0);
+  }
 }
 
 /* Yume heart emblem (center) */
 #yume-heart {
   position: fixed;
   inset: 0;
-  pointer-events: auto;
+  /* Let clicks pass through overlay except the heart core */
+  pointer-events: none;
   display: none;
   z-index: 4;
 }
@@ -178,8 +208,8 @@ body.theme-yume #yume-heart {
   left: 50%;
   top: 26vh;
   transform: translate(-50%, -50%) rotate(45deg);
-  width: min(22vw, 180px);
-  height: min(22vw, 180px);
+  width: min(11vw, 90px);
+  height: min(11vw, 90px);
   background: #ff9fd1;
   border-radius: 10px;
   box-shadow: 0 0 26px rgba(255, 159, 209, 0.8),
@@ -189,6 +219,11 @@ body.theme-yume #yume-heart {
   cursor: pointer;
   z-index: 5;
   transition: left 1.4s ease-in-out, top 1.4s ease-in-out;
+}
+#yume-heart .core.breaking {
+  animation: corePop 0.7s ease-in forwards;
+  box-shadow: 0 0 18px rgba(255, 159, 209, 0.9),
+    0 0 42px rgba(255, 159, 209, 0.6);
 }
 #yume-heart .core::before,
 #yume-heart .core::after {
@@ -204,9 +239,74 @@ body.theme-yume #yume-heart {
 #yume-heart .core::after {
   transform: translate(0, -50%);
 }
+/* During breaking, split the two lobes apart and fade */
+#yume-heart .core.breaking::before {
+  animation: pieceLeft 0.7s ease-in forwards;
+}
+#yume-heart .core.breaking::after {
+  animation: pieceTop 0.7s ease-in forwards;
+}
 @keyframes heartPulse {
   50% {
     transform: translate(-50%, -50%) rotate(45deg) scale(1.08);
+  }
+}
+
+@keyframes corePop {
+  0% {
+    transform: translate(-50%, -50%) rotate(45deg) scale(1);
+    opacity: 1;
+  }
+  40% {
+    transform: translate(-50%, -50%) rotate(45deg) scale(1.12);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(45deg) scale(0.6);
+    opacity: 0;
+  }
+}
+@keyframes pieceLeft {
+  0% {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-84%, -28%) rotate(-12deg);
+    opacity: 0;
+  }
+}
+@keyframes pieceTop {
+  0% {
+    transform: translate(0, -50%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(28%, -84%) rotate(12deg);
+    opacity: 0;
+  }
+}
+
+/* Crack overlay inside the core while breaking */
+#yume-heart .core .crack {
+  position: absolute;
+  inset: -6%;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  opacity: 0;
+  animation: crackFade 0.7s ease-out forwards;
+  mix-blend-mode: multiply;
+}
+@keyframes crackFade {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
   }
 }
 
@@ -279,6 +379,7 @@ body.theme-switching #theme-fx {
   padding: 0 8px;
   gap: 10px;
 }
+/* drag cursor removed */
 .win-icon {
   width: 16px;
   height: 16px;
@@ -293,7 +394,7 @@ body.theme-switching #theme-fx {
   letter-spacing: 0.02em;
   color: #fff;
   text-shadow: 0 1px 0 #001a4a;
-  font-family: Tahoma, "MS UI Gothic", system-ui, sans-serif;
+  font-family: "LoveLetter", Tahoma, "MS UI Gothic", system-ui, sans-serif;
 }
 .win-buttons {
   display: flex;
@@ -350,7 +451,7 @@ body.theme-vapor .win-client {
     0 0 8px rgba(56, 232, 221, 0.25);
 }
 .header h1.neon {
-  font-family: "Yusei Magic", system-ui, -apple-system, sans-serif;
+  font-family: "LoveLetter", "Yusei Magic", system-ui, -apple-system, sans-serif;
   font-size: clamp(28px, 5vw, 44px);
   letter-spacing: 0.06em;
   color: #ffb3e1;
@@ -445,7 +546,7 @@ textarea#message {
 }
 
 .preview-wrap {
-  margin-top: 10px;
+  margin-top: min(60vw, 360px);
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.06),
@@ -779,75 +880,9 @@ body.theme-vapor #third-eye {
   filter: drop-shadow(0 0 6px rgba(56, 232, 221, 0.45));
 }
 
-/* VHS scanline/noise overlay */
-#vhs-noise {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 3;
-  background: repeating-linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.06) 0 2px,
-      rgba(0, 0, 0, 0) 2px 4px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(255, 0, 102, 0.05) 0 3px,
-      transparent 3px 6px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(0, 255, 204, 0.05) 0 3px,
-      transparent 3px 6px
-    );
-  mix-blend-mode: overlay;
-  opacity: 0.4;
-  animation: flicker 1.8s steps(2, end) infinite;
-}
-@keyframes flicker {
-  50% {
-    opacity: 0.26;
-  }
-}
+/* VHS scanline/noise overlay removed */
 
-/* Global subtle grain/blur overlay for vapor */
-#global-noise {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 2;
-  display: none;
-}
-body.theme-vapor #global-noise {
-  display: block;
-}
-#global-noise::before,
-#global-noise::after {
-  content: "";
-  position: absolute;
-  inset: -50%;
-  background-image: radial-gradient(
-      rgba(255, 255, 255, 0.06) 1px,
-      transparent 1px
-    ),
-    radial-gradient(rgba(0, 0, 0, 0.06) 1px, transparent 1px);
-  background-position: 0 0, 20px 20px;
-  background-size: 32px 32px;
-  animation: grainShift 6s linear infinite;
-  filter: blur(0.45px) saturate(110%);
-}
-#global-noise::after {
-  animation-duration: 9s;
-  opacity: 0.75;
-}
-@keyframes grainShift {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(50px, 50px, 0);
-  }
-}
+/* global-noise overlay removed */
 
 /* Elevate card above backgrounds */
 .card {
@@ -875,7 +910,7 @@ body.theme-vapor #global-noise {
   left: 50%;
   bottom: 22px;
   transform: translateX(-50%);
-  font-family: "Yusei Magic", monospace;
+  font-family: "LoveLetter", "Yusei Magic", monospace;
   color: rgba(255, 255, 255, 0.85);
   text-shadow: 0 0 6px rgba(255, 102, 179, 0.8),
     0 0 10px rgba(56, 232, 221, 0.6);
