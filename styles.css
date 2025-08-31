@@ -96,6 +96,10 @@ body.theme-vapor #vapor-grid,
 body.theme-vapor #third-eye,
 body.theme-vapor #vhs-noise { display: block; }
 /* LOVE tiling (tiny) */
+#love-tiles { position: fixed; inset: 0; pointer-events: none; z-index: 0; display: none; opacity: .5; }
+body.theme-vapor #love-tiles { display: block; }
+#love-tiles { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='10'><text x='0' y='8' font-family='monospace' font-size='8' fill='%23ffffff' fill-opacity='0.12'>LOVE</text></svg>"); background-size: 20px 10px; background-repeat: repeat; mix-blend-mode: soft-light; }
+/* LOVE tiling (tiny) */
 #love-tiles { position: fixed; inset: 0; pointer-events: none; z-index: 1; display: none; opacity: .25; }
 body.theme-vapor #love-tiles { display: block; }
 #love-tiles { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='20'><text x='0' y='12' font-family='monospace' font-size='10' fill='%23ffffff' fill-opacity='0.06'>LOVE</text></svg>"); background-size: 40px 20px; background-repeat: repeat; mix-blend-mode: overlay; }
@@ -556,7 +560,7 @@ textarea#message {
     repeating-linear-gradient(90deg, rgba(255,0,102,.05) 0 3px, transparent 3px 6px),
     repeating-linear-gradient(90deg, rgba(0,255,204,.05) 0 3px, transparent 3px 6px);
   mix-blend-mode: overlay;
-  opacity: 0.33;
+  opacity: 0.4;
   animation: flicker 1.8s steps(2, end) infinite;
 }
 @keyframes flicker {
