@@ -109,6 +109,15 @@
   requestAnimationFrame(() => {
     updateSpeedLabel();
     playNow();
+    // show push start label briefly
+    const ps = document.getElementById('push-start');
+    if (ps) {
+      ps.style.display = 'block';
+      const hide = () => { ps.style.display = 'none'; document.removeEventListener('click', hide); document.removeEventListener('keydown', hide); };
+      setTimeout(hide, 3000);
+      document.addEventListener('click', hide);
+      document.addEventListener('keydown', hide);
+    }
   });
 
   // リプレイ

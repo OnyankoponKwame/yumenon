@@ -95,6 +95,10 @@ body.theme-yume #vhs-noise { display: none; }
 body.theme-vapor #vapor-grid,
 body.theme-vapor #third-eye,
 body.theme-vapor #vhs-noise { display: block; }
+/* LOVE tiling (tiny) */
+#love-tiles { position: fixed; inset: 0; pointer-events: none; z-index: 1; display: none; opacity: .25; }
+body.theme-vapor #love-tiles { display: block; }
+#love-tiles { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='20'><text x='0' y='12' font-family='monospace' font-size='10' fill='%23ffffff' fill-opacity='0.06'>LOVE</text></svg>"); background-size: 40px 20px; background-repeat: repeat; mix-blend-mode: overlay; }
 
 /* Yume heart emblem (center) */
 #yume-heart { position: fixed; inset: 0; pointer-events: auto; display: none; z-index: 4; }
@@ -125,11 +129,14 @@ body.theme-switching #theme-fx { opacity: 1; background: radial-gradient(circle 
   margin: 32px auto;
   background: var(--card);
   backdrop-filter: blur(12px) saturate(140%);
-  border: 2px solid rgba(255, 102, 179, 0.35);
-  border-radius: 20px;
-  box-shadow: 0 20px 60px -18px rgba(56, 232, 221, 0.35),
-    0 10px 40px -18px rgba(255, 102, 179, 0.35);
+  border: 2px solid rgba(255, 102, 179, 0.42);
+  border-radius: 26px;
+  box-shadow: 0 24px 70px -18px rgba(56, 232, 221, 0.35),
+    0 12px 46px -18px rgba(255, 102, 179, 0.35),
+    inset 0 0 0 1px rgba(255,255,255,.06),
+    inset 0 0 24px rgba(255,102,179,.12);
   padding: 20px 20px 16px;
+  position: relative;
 }
 
 .header {
@@ -550,14 +557,14 @@ body.theme-vapor #global-noise { display: block; }
 #global-noise::after {
   content: ""; position: absolute; inset: -50%;
   background-image:
-    radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
-    radial-gradient(rgba(0,0,0,.04) 1px, transparent 1px);
-  background-position: 0 0, 25px 25px;
-  background-size: 50px 50px;
-  animation: grainShift 7s linear infinite;
-  filter: blur(.3px);
+    radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+    radial-gradient(rgba(0,0,0,.06) 1px, transparent 1px);
+  background-position: 0 0, 20px 20px;
+  background-size: 32px 32px;
+  animation: grainShift 6s linear infinite;
+  filter: blur(.45px) saturate(110%);
 }
-#global-noise::after { animation-duration: 11s; opacity: .6; }
+#global-noise::after { animation-duration: 9s; opacity: .75; }
 @keyframes grainShift { from { transform: translate3d(0,0,0); } to { transform: translate3d(50px, 50px, 0); } }
 
 /* Elevate card above backgrounds */
@@ -579,6 +586,18 @@ body.theme-vapor #global-noise { display: block; }
   margin-top: 8px;
   color: #9a8796;
 }
+
+/* PUSH START label */
+#push-start {
+  position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%);
+  font-family: "Yusei Magic", monospace;
+  color: rgba(255,255,255,.85);
+  text-shadow: 0 0 6px rgba(255,102,179,.8), 0 0 10px rgba(56,232,221,.6);
+  letter-spacing: .12em; font-size: 12px;
+  opacity: .9; animation: pushBlink 1.2s steps(2) infinite; pointer-events: none;
+  z-index: 6;
+}
+@keyframes pushBlink { 50% { opacity: .35; } }
 
 /* Actions area */
 .actions {
