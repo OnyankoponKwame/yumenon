@@ -114,9 +114,29 @@
     const minBtn = tb.querySelector('.caption-buttons .min');
     const maxBtn = tb.querySelector('.caption-buttons .max');
     const closeBtn = tb.querySelector('.caption-buttons .close');
-    minBtn?.addEventListener('click', (e)=>{ e.preventDefault(); bodyPanel?.classList.toggle('collapsed'); });
-    maxBtn?.addEventListener('click', (e)=>{ e.preventDefault(); card.classList.toggle('maximized'); });
-    closeBtn?.addEventListener('click', (e)=>{ e.preventDefault(); bodyPanel?.classList.add('collapsed'); });
+    minBtn?.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const nowMin = card.classList.toggle('minimized');
+      if (nowMin) {
+        bodyPanel?.classList.add('collapsed');
+        card.classList.remove('maximized');
+      } else {
+        bodyPanel?.classList.remove('collapsed');
+      }
+    });
+    maxBtn?.addEventListener('click', (e)=>{
+      e.preventDefault();
+      card.classList.toggle('maximized');
+      if (card.classList.contains('maximized')) {
+        card.classList.remove('minimized');
+        bodyPanel?.classList.remove('collapsed');
+      }
+    });
+    closeBtn?.addEventListener('click', (e)=>{
+      e.preventDefault();
+      // Hide the entire window; no restore
+      card.style.display = 'none';
+    });
   })();
 
   // 初回自動再生

@@ -246,7 +246,7 @@ body.theme-switching #theme-fx {
 }
 .card.maximized{ width: 96vw; max-width: none; }
 .card.minimized .win2k-body{ display:none; }
-.card.minimized .win2k-window .titlebar{ position: fixed; left:auto; right: 10px; bottom: 10px; top:auto; z-index: 10; width: max-content; box-shadow: 0 2px 6px rgba(0,0,0,.35); border-radius: 3px; }
+.card.minimized .win2k-window .titlebar{ position: fixed; left:10px; right:auto; bottom: 10px; top:auto; z-index: 10; width: max-content; box-shadow: 0 2px 6px rgba(0,0,0,.35); border-radius: 3px; }
 
 /* 90s ADV window bar */
 .window-bar {
