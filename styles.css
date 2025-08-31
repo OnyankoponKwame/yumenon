@@ -142,7 +142,7 @@ body.theme-switching #theme-fx { opacity: 1; background: radial-gradient(circle 
 /* 90s ADV window bar */
 .window-bar {
   position: absolute; top: 0; left: 0; right: 0; height: 28px;
-  background: linear-gradient(180deg, #0a246a, #3a6ea5);
+  background: linear-gradient(180deg, #3B6EA5, #3B6EA5);
   border-top-left-radius: 6px; border-top-right-radius: 6px;
   border-bottom: 1px solid #003c74;
   display: flex; align-items: center; padding: 0 8px; gap: 10px;
@@ -154,11 +154,11 @@ body.theme-switching #theme-fx { opacity: 1; background: radial-gradient(circle 
   all: unset;
   width: 30px; height: 22px; line-height: 20px; text-align: center;
   border: 1px solid #404040; border-top-color: #ffffff; border-left-color: #ffffff;
-  background: #d4d0c8;
+  background: #D4D0C8;
   color: #000; font-weight: 700; font-size: 12px; border-radius: 2px;
 }
 .win-buttons .win-btn:active { border: 1px solid #ffffff; border-top-color: #404040; border-left-color: #404040; }
-.win-buttons .win-btn.close { background: #d4d0c8; color: #000; }
+.win-buttons .win-btn.close { background: #D4D0C8; color: #000; }
 
 /* Win2000 client area */
 .win-client { background: transparent; padding: 0; border: none; box-shadow: none; border-radius: 0; }
@@ -632,4 +632,72 @@ body.theme-vapor #global-noise { display: block; }
 }
 .actions .row {
   align-items: center;
+}
+
+/* Win2000 classic titlebar (provided spec) */
+:root{
+  --cap-dark: #0A246A;
+  --cap-mid:  #3B6EA5;
+  --cap-lite: #A6CAF0;
+  --border-top-hi:  #FFFFFF;
+  --border-bot-dark:#000000;
+  --caption-text:   #FFFFFF;
+  --btn-face:       #D4D0C8;
+  --btn-hi:         #FFFFFF;
+  --btn-sh:         #808080;
+  --btn-dk:         #404040;
+}
+.win2k-window{
+  border-top:    1px solid var(--border-top-hi);
+  border-bottom: 1px solid var(--border-bot-dark);
+  font-family: Tahoma, "MS UI Gothic", sans-serif;
+}
+.titlebar{
+  position: relative;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  padding: 0 3px 0 4px;
+  line-height: 22px;
+  user-select: none;
+}
+.titlebar.active{
+  background: linear-gradient(to right, var(--cap-dark) 0%, var(--cap-mid) 62%, var(--cap-lite) 100%);
+  color: var(--caption-text);
+  box-shadow: inset 0 1px 0 var(--border-top-hi), inset 0 -1px 0 var(--border-bot-dark);
+}
+.titlebar.inactive{
+  background: linear-gradient(to right, #808080 0%, #C0C0C0 100%);
+  color: #E0E0E0;
+  box-shadow: inset 0 1px 0 var(--border-top-hi), inset 0 -1px 0 var(--border-bot-dark);
+}
+.win-icon{
+  width: 16px; height: 16px; margin-right: 4px;
+  background: var(--btn-face);
+  box-shadow: inset 1px 1px 0 var(--btn-hi), inset -1px -1px 0 var(--btn-sh), 0 0 0 1px #000;
+}
+.title{
+  font-weight: 700;
+  font-size: 11px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.caption-buttons{ margin-left: auto; display: flex; gap: 2px; }
+.caption-buttons button{
+  width: 16px; height: 14px; background: var(--btn-face); border: none; padding: 0; cursor: default;
+  box-shadow: inset 1px 1px 0 var(--btn-hi), inset -1px -1px 0 var(--btn-sh), 0 0 0 1px #000;
+}
+.caption-buttons .min::before,
+.caption-buttons .max::before,
+.caption-buttons .close::before{
+  content:""; display:block; margin: 0 auto; margin-top: 5px; width: 8px; height: 2px; background: #000;
+}
+.caption-buttons .max::before{ height: 6px; width: 8px; margin-top: 3px; border: 1px solid #000; background: transparent; }
+.caption-buttons .close::before{
+  width: 8px; height: 8px; margin-top: 3px;
+  background: conic-gradient(from 45deg, #000 0 25%, transparent 0 50%, #000 0 75%, transparent 0);
+  -webkit-mask: linear-gradient(#000 0 0) center/100% 2px no-repeat, linear-gradient(#000 0 0) center/2px 100% no-repeat;
+  mask: linear-gradient(#000 0 0) center/100% 2px no-repeat, linear-gradient(#000 0 0) center/2px 100% no-repeat;
+}
+.caption-buttons button:active{
+  box-shadow: inset 1px 1px 0 var(--btn-sh), inset -1px -1px 0 var(--btn-hi), 0 0 0 1px #000;
 }
