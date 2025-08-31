@@ -338,19 +338,19 @@ textarea#message {
 #vapor-grid {
   position: fixed;
   inset: auto 0 0 0;
-  height: 42vh;
+  height: 62vh;
   z-index: 0;
   background: repeating-linear-gradient(
       0deg,
       rgba(255, 102, 179, 0.35) 0 2px,
-      transparent 2px 40px
+      transparent 2px 80px
     ),
     repeating-linear-gradient(
       90deg,
       rgba(56, 232, 221, 0.35) 0 2px,
-      transparent 2px 60px
+      transparent 2px 80px
     );
-  transform: perspective(700px) rotateX(60deg) scale(1.2);
+  transform: perspective(700px) rotateX(58deg) scale(1.35);
   transform-origin: bottom;
   filter: drop-shadow(0 -6px 10px rgba(255, 102, 179, 0.35));
 }
@@ -529,20 +529,36 @@ textarea#message {
   inset: 0;
   pointer-events: none;
   z-index: 3;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.05) 0 2px,
-    rgba(0, 0, 0, 0) 2px 4px
-  );
+  background:
+    repeating-linear-gradient(to bottom, rgba(255,255,255,.06) 0 2px, rgba(0,0,0,0) 2px 4px),
+    repeating-linear-gradient(90deg, rgba(255,0,102,.05) 0 3px, transparent 3px 6px),
+    repeating-linear-gradient(90deg, rgba(0,255,204,.05) 0 3px, transparent 3px 6px);
   mix-blend-mode: overlay;
-  opacity: 0.28;
-  animation: flicker 2s steps(2, end) infinite;
+  opacity: 0.33;
+  animation: flicker 1.8s steps(2, end) infinite;
 }
 @keyframes flicker {
   50% {
-    opacity: 0.22;
+    opacity: 0.26;
   }
 }
+
+/* Global subtle grain/blur overlay for vapor */
+#global-noise { position: fixed; inset: 0; pointer-events: none; z-index: 2; display: none; }
+body.theme-vapor #global-noise { display: block; }
+#global-noise::before,
+#global-noise::after {
+  content: ""; position: absolute; inset: -50%;
+  background-image:
+    radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+    radial-gradient(rgba(0,0,0,.04) 1px, transparent 1px);
+  background-position: 0 0, 25px 25px;
+  background-size: 50px 50px;
+  animation: grainShift 7s linear infinite;
+  filter: blur(.3px);
+}
+#global-noise::after { animation-duration: 11s; opacity: .6; }
+@keyframes grainShift { from { transform: translate3d(0,0,0); } to { transform: translate3d(50px, 50px, 0); } }
 
 /* Elevate card above backgrounds */
 .card {
