@@ -147,7 +147,7 @@ body.theme-switching #theme-fx { opacity: 1; background: radial-gradient(circle 
   border-bottom: 1px solid #808080;
   display: flex; align-items: center; padding: 0 8px; gap: 10px;
 }
-.win-icon { width: 16px; height: 16px; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><rect width='16' height='16' fill='%23d4d0c8'/><path d='M8 2 L10 6 L14 6 L11 9 L12 13 L8 11 L4 13 L5 9 L2 6 L6 6 Z' fill='%23ff66b3'/></svg>"); background-size: 16px 16px; border: 1px solid #808080; box-shadow: inset 1px 1px 0 #fff; }
+.win-icon { width: 16px; height: 16px; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><rect width='16' height='16' fill='%23d4d0c8'/><path d='M8 4 C7 2.5 4.8 2.5 4.2 4.2 C3.7 5.7 5 7 6.4 8.2 C7.2 8.9 7.6 9.2 8 9.6 C8.4 9.2 8.8 8.9 9.6 8.2 C11 7 12.3 5.7 11.8 4.2 C11.2 2.5 9 2.5 8 4 Z' fill='%23ff66b3'/></svg>"); background-size: 16px 16px; border: 1px solid #808080; box-shadow: inset 1px 1px 0 #fff; }
 .win-title { flex: 1; font-size: 12px; letter-spacing: .02em; color: #000; text-shadow: 0 1px 0 #ffffff; font-family: Tahoma, "MS UI Gothic", system-ui, sans-serif; }
 .win-buttons { display: flex; gap: 4px; }
 .win-buttons .win-btn {
@@ -161,8 +161,8 @@ body.theme-switching #theme-fx { opacity: 1; background: radial-gradient(circle 
 .win-buttons .win-btn.close { background: #d4d0c8; color: #000; }
 
 /* Win2000 client area */
-.win-client { background: #d4d0c8; padding: 10px; border: 1px solid #808080; box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #404040; border-radius: 2px; }
-body.theme-vapor .win-client { background: rgba(212,208,200,.92); }
+.win-client { background: transparent; padding: 0; border: none; box-shadow: none; border-radius: 0; }
+body.theme-vapor .win-client { background: transparent; }
 
 /* 3D window-like inner frame */
 body.theme-vapor .card {
