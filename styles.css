@@ -1,16 +1,4 @@
 :root {
-  /* Vaporwave gradient backdrop */
-  --bg-grad: radial-gradient(
-      1000px 700px at 10% 20%,
-      rgba(255, 0, 102, 0.18) 0%,
-      transparent 60%
-    ),
-    radial-gradient(
-      900px 600px at 85% 10%,
-      rgba(0, 255, 204, 0.12) 0%,
-      transparent 60%
-    ),
-    linear-gradient(180deg, #3b1d60 0%, #2c1b4a 45%, #1a1233 100%);
   --pink: #ff66b3;
   --pink-deep: #ff4fa3;
   --lav: #b19eff;
@@ -18,6 +6,28 @@
   --text: #efe8ff;
   --card: #1a1233cc;
   --bgimg-opacity: 0.25;
+  --bg-grad: linear-gradient(180deg, #3b1d60 0%, #1a1233 100%);
+}
+
+/* Theme: Vaporwave (default) */
+body.theme-vapor {
+  --bg-grad: radial-gradient(1000px 700px at 10% 20%, rgba(255,0,102,.18) 0%, transparent 60%),
+              radial-gradient(900px 600px at 85% 10%, rgba(0,255,204,.12) 0%, transparent 60%),
+              linear-gradient(180deg, #3b1d60 0%, #2c1b4a 45%, #1a1233 100%);
+  --text: #efe8ff;
+  --card: #1a1233cc;
+  --bgimg-opacity: 0.25;
+}
+
+/* Theme: Yumekawa (pastel) */
+body.theme-yume {
+  --bg-grad: radial-gradient(1200px 800px at 10% 10%, #ffeafb 0%, transparent 60%),
+              radial-gradient(1000px 700px at 90% 20%, #e8f1ff 0%, transparent 60%),
+              radial-gradient(900px 700px at 50% 90%, #fff1f7 0%, transparent 60%),
+              linear-gradient(180deg, #fff5fb 0%, #ffe9f5 40%, #ffe5ff 100%);
+  --text: #6b5d6b;
+  --card: #ffffffcc;
+  --bgimg-opacity: 0.35;
 }
 
 * {
@@ -60,6 +70,55 @@ body { font-family: MyHand, ... }
 .bg-confetti {
   display: none;
 }
+
+/* Yume-only confetti stars */
+body.theme-yume .bg-confetti::before,
+body.theme-yume .bg-confetti::after {
+  content: "";
+  position: fixed; inset: 0; pointer-events: none;
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(255,102,179,.35) 2px, transparent 3px),
+    radial-gradient(circle at 60% 30%, rgba(177,158,255,.35) 2px, transparent 3px),
+    radial-gradient(circle at 80% 70%, rgba(255,213,246,.4) 3px, transparent 4px),
+    radial-gradient(circle at 30% 80%, rgba(255,240,250,.5) 2px, transparent 3px);
+  background-size: 200px 200px;
+  animation: floatStars 16s linear infinite;
+}
+body.theme-yume .bg-confetti::after { animation-duration: 22s; opacity: .7; }
+@keyframes floatStars { from { transform: translateY(0); } to { transform: translateY(-200px); } }
+body.theme-yume .bg-confetti { display:none; }
+
+/* Theme visibility toggles */
+body.theme-yume #vapor-grid,
+body.theme-yume #third-eye,
+body.theme-yume #vhs-noise { display: none; }
+body.theme-vapor #vapor-grid,
+body.theme-vapor #third-eye,
+body.theme-vapor #vhs-noise { display: block; }
+
+/* Yume heart emblem (center) */
+#yume-heart { position: fixed; inset: 0; pointer-events: auto; display: none; z-index: 4; }
+body.theme-yume #yume-heart { display: block; }
+#yume-heart .rays { display: none; }
+#yume-heart .core {
+  position: absolute; left: 50%; top: 26vh; transform: translate(-50%, -50%) rotate(45deg);
+  width: min(22vw, 180px); height: min(22vw, 180px);
+  background: #ff9fd1;
+  border-radius: 10px;
+  box-shadow: 0 0 26px rgba(255,159,209,.8), 0 0 60px rgba(255,159,209,.5);
+  animation: heartPulse 3s ease-in-out infinite;
+  pointer-events: auto; cursor: pointer; z-index: 5;
+  transition: left 1.4s ease-in-out, top 1.4s ease-in-out;
+}
+#yume-heart .core::before,
+#yume-heart .core::after { content: ""; position: absolute; inset: 0; background: inherit; border-radius: 50%; }
+#yume-heart .core::before { transform: translate(-50%, 0); }
+#yume-heart .core::after { transform: translate(0, -50%); }
+@keyframes heartPulse { 50% { transform: translate(-50%, -50%) rotate(45deg) scale(1.08); } }
+
+/* Theme transition overlay */
+#theme-fx { position: fixed; inset: 0; pointer-events: none; opacity: 0; transition: opacity .8s ease; z-index: 5; }
+body.theme-switching #theme-fx { opacity: 1; background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.7), rgba(255,255,255,0.0) 60%), linear-gradient(180deg, rgba(255,182,218,.6), rgba(177,158,255,.6)); mix-blend-mode: screen; }
 
 .card {
   width: min(960px, 92vw);

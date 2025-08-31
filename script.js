@@ -4,9 +4,11 @@
 
   const elPreview = $("#preview");
   const elReplay = $("#replay");
+  const elTitle = document.querySelector('.header h1');
+  const elSub = document.querySelector('.header .sub');
 
   // 固定テキスト（ここを書き換えてください）
-  const TEXT = `かわいいものがすきで
+  const YUME_TEXT = `かわいいものがすきで
 
 はーとにショットガン撃たれたくらいショックをうけてしまって、ああ、
 
@@ -32,6 +34,20 @@
 好きです付き合ってといえる自信がないだけなんですね本当は　実際全く器ではないのでそれでいんだけど　
 
 それって、好きってことじゃん！`;
+  const VAPOR_TEXT = `ネオンの海で、うかぶ心。
+
+グリッドの地平線に、ゆっくり流れる告白。
+夜風はピンクとシアンを混ぜて、あなたの名前を照らす。
+
+ぼくはまだ上手に言えないけど、
+この光が消えないうちに、好きって言う。`;
+
+  const YUME_TITLE = 'ゆめかわ告白メーカー';
+  const YUME_SUB = '手書き風に想いを届けよう…♡';
+  const VAPOR_TITLE = 'ネオンのこくはく';
+  const VAPOR_SUB = '夜のグリッドに想いを流す';
+
+  let TEXT = YUME_TEXT;
   // 表現モード: 'outline'（フォント輪郭描画） / 'stroke'（テンプレ字画） / 'svg'（リビール） / 'type'
   const MODE = "svg";
   // スピード倍率（1 = 標準、上げると速く）。UIスライダーで変更。
@@ -61,6 +77,24 @@
     document.documentElement.style.setProperty("--pink-deep", deep);
   };
   setColor(COLOR);
+
+  // Theme: programmatic switch (default to yume on load)
+  const setTheme = (name) => {
+    document.body.classList.remove('theme-vapor','theme-yume');
+    const cls = name === 'yume' ? 'theme-yume' : 'theme-vapor';
+    document.body.classList.add(cls);
+    // apply theme-specific content
+    if (name === 'yume') {
+      TEXT = YUME_TEXT;
+      if (elTitle) elTitle.textContent = YUME_TITLE;
+      if (elSub) elSub.textContent = YUME_SUB;
+    } else {
+      TEXT = VAPOR_TEXT;
+      if (elTitle) elTitle.textContent = VAPOR_TITLE;
+      if (elSub) elSub.textContent = VAPOR_SUB;
+    }
+  };
+  setTheme('yume');
 
   // 再生ディスパッチ
   function playNow() {
@@ -94,6 +128,40 @@
       SPEED = parseFloat(elSpeed.value);
       updateSpeedLabel();
       playNow();
+    });
+  }
+
+  // Yume heart click -> transition to vapor theme
+  const yumeHeartCore = document.querySelector('#yume-heart .core');
+  const themeFx = document.getElementById('theme-fx');
+  if (yumeHeartCore) {
+    yumeHeartCore.addEventListener('click', () => {
+      document.body.classList.add('theme-switching');
+      // small delay for overlay, then switch theme
+      setTimeout(() => {
+        setTheme('vapor');
+        // remove switching after fade completes
+        setTimeout(() => document.body.classList.remove('theme-switching'), 900);
+        // replay with new content
+        playNow();
+      }, 200);
+    });
+
+    // Make heart wander across the screen while in yume theme
+    const wander = () => {
+      if (!document.body.classList.contains('theme-yume')) return; // stop after switch
+      const marginVh = 18; // vertical safe margins
+      const topVh = Math.round(marginVh + Math.random() * (70 - marginVh));
+      const leftVw = Math.round(15 + Math.random() * 70); // keep inside horizontally
+      yumeHeartCore.style.top = topVh + 'vh';
+      yumeHeartCore.style.left = leftVw + 'vw';
+    };
+    // Seed and then move periodically
+    setTimeout(wander, 400);
+    const wanderId = setInterval(wander, 2400);
+    // Clear interval on theme switch
+    document.addEventListener('transitionend', () => {
+      if (!document.body.classList.contains('theme-yume')) clearInterval(wanderId);
     });
   }
 
@@ -181,47 +249,52 @@
       setInterval(move, 2600);
     }
 
-    // Occasionally move the SVG pupil left-right within the almond
+    // Move the SVG pupil to chase the heart-glint inside the triangle
     const pupil = elThirdEye.querySelector('.eye-pupil');
     if (pupil) {
       let rafId;
       const centerX = 50;
       const minX = 44; // keep comfortably inside outline (cx range)
       const maxX = 56;
+      const centerY = 47;
+      const minY = 43;
+      const maxY = 51;
       const easeInOut = (t) => (t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t+2, 2)/2);
 
-      const animateTo = (from, to, durMs) => {
+      const animateTo = (from, to, durMs, attr='cx') => {
         const start = performance.now();
         const end = start + durMs;
         const tick = (now) => {
           const t = Math.min(1, (now - start) / durMs);
           const e = easeInOut(t);
           const x = from + (to - from) * e;
-          pupil.setAttribute('cx', x.toFixed(2));
+          pupil.setAttribute(attr, x.toFixed(2));
           if (now < end) rafId = requestAnimationFrame(tick);
         };
         rafId = requestAnimationFrame(tick);
       };
 
-      const loop = () => {
-        const current = parseFloat(pupil.getAttribute('cx')) || centerX;
-        const amp = Math.random() * 4 + 2; // 2..6
-        const left = Math.max(minX, centerX - amp);
-        const right = Math.min(maxX, centerX + amp);
-        // Choose among left/center/right with some bias to include center
-        const r = Math.random();
-        let target = centerX;
-        if (r < 0.35) target = centerX; // often return to center
-        else if (r < 0.675) target = left;
-        else target = right;
-        const baseDur = 1200; // ms
-        const pause = 1800; // ms
-        const scale = 1 / Math.max(0.2, SPEED); // slower SPEED -> longer duration
-        animateTo(current, target, baseDur * scale);
-        setTimeout(loop, (baseDur + pause) * scale);
+      const chase = () => {
+        if (!glint) return;
+        // glint left/top are percentages in the same 0..100 space as the SVG viewBox
+        const lx = parseFloat(glint.style.left) || 50; // 0..100
+        const ly = parseFloat(glint.style.top) || 50;
+        // map to limited pupil range around center with compression
+        const targetCx = Math.max(minX, Math.min(maxX, centerX + (lx - 50) * (6/50)));
+        const targetCy = Math.max(minY, Math.min(maxY, centerY + (ly - 50) * (5/50)));
+
+        const curCx = parseFloat(pupil.getAttribute('cx')) || centerX;
+        const curCy = parseFloat(pupil.getAttribute('cy')) || centerY;
+        const dist = Math.hypot(targetCx - curCx, targetCy - curCy);
+        const baseDur = 800; // ms for unit step
+        const dur = (baseDur + dist * 40) / Math.max(0.2, SPEED);
+        animateTo(curCx, targetCx, dur * 0.9, 'cx');
+        animateTo(curCy, targetCy, dur, 'cy');
       };
-      // small initial delay
-      setTimeout(loop, 1200);
+
+      // chase periodically; also on glint moves (same timer cadence)
+      setInterval(chase, 300);
+      setTimeout(chase, 200);
     }
   }
 
