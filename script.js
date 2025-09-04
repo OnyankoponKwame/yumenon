@@ -8,34 +8,39 @@
 
   // 固定テキスト（ここを書き換えてください）
   const YUME_TEXT = `ゆめのんの好きなところ
-普通になりたいと願っているところ
+普通になりたいと願ってるところ
 メンヘラ売りしないところ
 インチキじゃないところ
 センスのいいところ
 筋が通ってるところ
 繊細で優しいところ
 わがままなところ
-可愛い切実なところ
+可愛さに切実なところ
 反骨精神
 その他もろもろの欠点
 ゆめのんの全部が大好きです`;
 
   const VAPOR_TEXT = `
-彼ピ作ってねとか言いながら、男と酒飲むって聞いて、
-友達で2人きりで苦手なお酒飲めるくらいの関係の人はいるんだぁと思って
-はーとにショットガン撃たれたくらいショックをうけてしまって
-あー、自分の言葉は嘘だったんだって思ったんだ。
+彼ピ作ってねとか言ったのに。
+男の友達と酒飲むって聞いて、
+2人きりで苦手なお酒飲める
+くらいの関係の人はいるんだと思って
+はーとにショットガン撃たれたくらい
+ショックをうけてしまって。
+あー、自分の言葉は嘘だったんだ
+って思ったんだ。
 
-でもゆめのんにほんとに好きな人ができたとき、
-この妄想は終わるんだと思います。
-なによりそれはゆめのんの願いだし、幸せになってほしい。
+でもゆめのんにほんとに好きな人
+ができたとき、この妄想は
+終わるんだと思います。
+なによりそれはゆめのんの願いだし、
+幸せになってほしいです。
 
-自分と本当は全然関係ない、可哀想な素敵な子。
-
-自己矛盾におちいっています。うそぶいている。
-
-ぼくはまだ上手に言えないけど、
-この光が消えないうちに、好きって言う。`;
+自分と本当は全然関係ない、
+可哀想な素敵な子。
+自分をどう位置づければいいか
+わからない。遠くから見てるだけに
+すればいいのに。`;
 
   const YUME_TITLE = "Love Letter";
   const YUME_SUB = "iをこわしてね";
@@ -44,9 +49,9 @@
 
   let TEXT = YUME_TEXT;
   // 表現モード: 'outline'（フォント輪郭描画） / 'stroke'（テンプレ字画） / 'svg'（リビール） / 'type'
-  const MODE = "outline";
+  const MODE = "svg";
   // スピード倍率（UI削除に伴い固定値）
-  let SPEED = 0.5;
+  let SPEED = 0.7;
   const elBgFile = document.getElementById("bgImage");
   const elBgOpacity = document.getElementById("bgOpacity");
   const elBgClear = document.getElementById("bgClear");
@@ -486,8 +491,9 @@
     wrap.appendChild(svg);
     elPreview.appendChild(wrap);
 
+    const inVapor = document.body.classList.contains("theme-vapor");
     const padX = 18;
-    const padY = 32;
+    const padY = inVapor ? 3 : 15; // bring vapor text closer to the top
     const vw = Math.max(320, elPreview.clientWidth - padX * 2);
     const fontSize = Math.max(22, Math.min(36, vw / 15));
     const lineGap = Math.round(fontSize * 1.5);
@@ -530,7 +536,6 @@
     let totalDelay = 0; // ms
     const perChar = 80; // ms per char baseline
 
-    const inVapor = document.body.classList.contains("theme-vapor");
     const strokeColor = inVapor ? "#ffb3e1" : color; // neon-like outline for vapor
 
     lines.forEach((line, i) => {
